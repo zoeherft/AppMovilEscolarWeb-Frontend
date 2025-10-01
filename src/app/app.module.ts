@@ -18,9 +18,14 @@ import { RegistroMaestrosComponent } from './partials/registro-maestros/registro
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 //Ngx-cookie-service
 import { CookieService } from 'ngx-cookie-service';
+
+// Third Party Modules
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -41,10 +46,14 @@ import { CookieService } from 'ngx-cookie-service';
     HttpClientModule,
     MatCardModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgxMaskDirective
   ],
   providers: [
-    CookieService
+    CookieService,
+    provideNgxMask()
   ],
   bootstrap: [AppComponent]
 })
