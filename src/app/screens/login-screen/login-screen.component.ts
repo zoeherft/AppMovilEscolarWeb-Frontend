@@ -24,11 +24,41 @@ export class LoginScreenComponent implements OnInit {
   }
 
   public login(){
+    // Valida los campos del formulario del login
     this.errors = {};
     this.errors = this.facadeService.validarLogin(this.username, this.password);
     if(Object.keys(this.errors).length > 0){
       return false;
     }
+
+    this.load = true;
+    // Lógica para el login
+    // Llamar al servicio de login
+    this.facadeService.login(this.username, this.password).subscribe(
+      (response:any) => {
+        // Guardar el token en el almacenamiento local - las cookies
+        this.facadeService.saveUserData(response);
+        // Redirigir según el rol
+        const role = response.rol;
+        if (role === 'administrador') {
+          this.router.navigate(["/administrador"]);
+        } else if (role === 'maestro') {
+          this.router.navigate(["/maestros"]);
+        } else if (role === 'alumno') {
+          this.router.navigate(["/alumnos"]);
+        } else {
+          this.router.navigate(["home"]);
+        }
+        this.load = false;
+      },
+      (error:any) => {
+        this.load = false;
+        // Mostrar mensaje de error
+        alert("Error en el login: " + error.message);
+        this.errors.general = "Credenciales inválidas. Por favor, inténtalo de nuevo.";
+      }
+    );
+
   }
 
   public showPassword(){

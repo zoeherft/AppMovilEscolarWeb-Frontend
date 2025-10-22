@@ -20,16 +20,20 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
 //Ngx-cookie-service
 import { CookieService } from 'ngx-cookie-service';
 
 // Third Party Modules
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { HomeScreenComponent } from './screens/home-screen/home-screen.component';
+import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.component';
+import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
+import { AdminScreenComponent } from './screens/admin-screen/admin-screen.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +44,11 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     DashboardLayoutComponent,
     RegistroAdminComponent,
     RegistroAlumnosComponent,
-    RegistroMaestrosComponent
+    RegistroMaestrosComponent,
+    HomeScreenComponent,
+    AlumnosScreenComponent,
+    MaestrosScreenComponent,
+    AdminScreenComponent
   ],
   imports: [
     BrowserModule,
