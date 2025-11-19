@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FacadeService } from 'src/app/services/facade.service';
 import { Location } from '@angular/common';
+import { FacadeService } from 'src/app/services/facade.service';
 import { MatRadioChange } from '@angular/material/radio';
-import { AdministradoresService } from '../../services/administradores.service';
+import { AdministradoresService } from 'src/app/services/administradores.service';
 
 @Component({
   selector: 'app-registro-usuarios-screen',
@@ -13,6 +13,7 @@ import { AdministradoresService } from '../../services/administradores.service';
 export class RegistroUsuariosScreenComponent implements OnInit {
 
   public tipo:string = "registro-usuarios";
+  public user:any = {};
   public editar:boolean = false;
   public rol:string = "";
   public idUser:number = 0;
@@ -24,9 +25,6 @@ export class RegistroUsuariosScreenComponent implements OnInit {
 
   public tipo_user:string = "";
 
-  //JSON para el usuario
-  public user : any = {};
-
   constructor(
     private location : Location,
     public activatedRoute: ActivatedRoute,
@@ -36,13 +34,14 @@ export class RegistroUsuariosScreenComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //Revisar si se está editando o creando un usuario
+    this.user.tipo_usuario = '';
+    //Obtener de la URL el rol para saber cual editar
     if(this.activatedRoute.snapshot.params['rol'] != undefined){
       this.rol = this.activatedRoute.snapshot.params['rol'];
       console.log("Rol detectado: ", this.rol);
     }
 
-    //El if valida si existe un parámetro en la URL
+    //El if valida si existe un parámetro ID en la URL
     if(this.activatedRoute.snapshot.params['id'] != undefined){
       this.editar = true;
       //Asignamos a nuestra variable global el valor del ID que viene por la URL
@@ -53,36 +52,6 @@ export class RegistroUsuariosScreenComponent implements OnInit {
     }
   }
 
-  //Obtener usuario por ID
-  public obtenerUserByID() {
-    //Lógica para obtener el usuario según su ID y rol
-    console.log("Obteniendo usuario de tipo: ", this.rol, " con ID: ", this.idUser);
-    //Aquí se haría la llamada al servicio correspondiente según el rol
-    if(this.rol === "administrador"){
-      this.administradoresService.obtenerAdminPorID(this.idUser).subscribe(
-        (response) => {
-          this.user = response;
-          console.log("Usuario original obtenido: ", this.user);
-          // Asignar datos, soportando respuesta plana o anidada
-          this.user.first_name = response.user?.first_name || response.first_name;
-          this.user.last_name = response.user?.last_name || response.last_name;
-          this.user.email = response.user?.email || response.email;
-          this.user.tipo_usuario = this.rol;
-          this.isAdmin = true;
-        }, (error) => {
-          console.log("Error: ", error);
-          alert("No se pudo obtener el administrador seleccionado");
-        }
-      );
-
-    }else if(this.rol === "maestro"){
-      // TODO: Implementar lógica para obtener maestro por ID
-    }else if(this.rol === "alumno"){
-      // TODO: Implementar lógica para obtener alumno por ID
-    }
-  }
-
-  // Función para conocer que usuario se ha elegido
   public radioChange(event: MatRadioChange) {
     if(event.value == "administrador"){
       this.isAdmin = true;
@@ -101,6 +70,36 @@ export class RegistroUsuariosScreenComponent implements OnInit {
       this.tipo_user = "maestro";
     }
   }
+
+  //Obtener usuario por ID
+  public obtenerUserByID() {
+    //Lógica para obtener el usuario según su ID y rol
+    console.log("Obteniendo usuario de tipo: ", this.rol, " con ID: ", this.idUser);
+    //Aquí se haría la llamada al servicio correspondiente según el rol
+    if(this.rol == "administrador"){
+      this.administradoresService.obtenerAdminPorID(this.idUser).subscribe(
+        (response) => {
+          this.user = response;
+          console.log("Usuario original obtenido: ", this.user);
+          // Asignar datos, soportando respuesta plana o anidada
+          this.user.first_name = response.user?.first_name || response.first_name;
+          this.user.last_name = response.user?.last_name || response.last_name;
+          this.user.email = response.user?.email || response.email;
+          this.user.tipo_usuario = this.rol;
+          this.isAdmin = true;
+        }, (error) => {
+          console.log("Error: ", error);
+          alert("No se pudo obtener el administrador seleccionado");
+        }
+      );
+    }else if(this.rol == "maestro"){
+      // TODO: Implementar lógica para obtener maestro por ID
+    }else if(this.rol == "alumno"){
+      // TODO: Implementar lógica para obtener alumno por ID
+    }
+
+  }
+
   //Función para regresar a la pantalla anterior
   public goBack() {
     this.location.back();
