@@ -80,6 +80,13 @@
   opacity: 1;
 }
 
+/* Filtro de búsqueda */
+mat-form-field {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
 /* Scroll horizontal SOLO para la tabla */
 
 // Scroll horizontal para tabla y paginador juntos

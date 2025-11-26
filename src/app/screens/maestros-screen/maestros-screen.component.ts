@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
@@ -20,14 +21,11 @@ export class MaestrosScreenComponent implements OnInit {
   public lista_maestros: any[] = [];
 
   //Para la tabla
-  displayedColumns: string[] = ['id_trabajador', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'rfc', 'cubiculo', 'area_investigacion', 'editar', 'eliminar'];
+  displayedColumns: string[] = ['id', 'id_trabajador', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'rfc', 'cubiculo', 'area_investigacion', 'editar', 'eliminar'];
   dataSource = new MatTableDataSource<DatosUsuario>(this.lista_maestros as DatosUsuario[]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public facadeService: FacadeService,
@@ -50,6 +48,11 @@ export class MaestrosScreenComponent implements OnInit {
     this.obtenerMaestros();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   // Consumimos el servicio para obtener los maestros
   //Obtener maestros
   public obtenerMaestros() {
@@ -67,12 +70,20 @@ export class MaestrosScreenComponent implements OnInit {
           console.log("Maestros: ", this.lista_maestros);
 
           this.dataSource = new MatTableDataSource<DatosUsuario>(this.lista_maestros as DatosUsuario[]);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         }
       }, (error) => {
         console.error("Error al obtener la lista de maestros: ", error);
         alert("No se pudo obtener la lista de maestros");
       }
     );
+  }
+
+  //Filtrar datos de la tabla
+  public filtrar(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   public goEditar(idUser: number) {
@@ -122,6 +133,6 @@ export interface DatosUsuario {
   telefono: string,
   rfc: string,
   cubiculo: string,
-  area_investigacion: number,
+  area_investigacion: string,
 }
 
