@@ -73,10 +73,11 @@ export class EventosService {
       error["tipo_evento"] = this.errorService.required;
     }
 
-    // 3. Fecha de realización: obligatoria, no anterior a hoy
+    // 3. Fecha de realización: obligatoria, no anterior a hoy (solo para nuevos eventos)
     if (!this.validatorService.required(data["fecha_realizacion"])) {
       error["fecha_realizacion"] = this.errorService.required;
-    } else {
+    } else if (!editar) {
+      // Solo validar fecha futura para nuevos eventos, no para edición
       const fechaEvento = new Date(data["fecha_realizacion"]);
       const hoy = new Date();
       hoy.setHours(0, 0, 0, 0);

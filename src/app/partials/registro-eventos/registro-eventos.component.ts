@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { FacadeService } from 'src/app/services/facade.service';
 import { EventosService } from 'src/app/services/eventos.service';
+import { EditarEventoModalComponent } from 'src/app/modals/editar-evento-modal/editar-evento-modal.component';
 
 // Importaciones para el DatePicker
 declare var M: any;
@@ -46,7 +48,8 @@ export class RegistroEventosComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     private eventosService: EventosService,
     private facadeService: FacadeService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +95,25 @@ export class RegistroEventosComponent implements OnInit {
       (response) => {
         this.evento = response;
         console.log("Evento cargado: ", this.evento);
+
+        // Convertir fecha de string a Date para el DatePicker
+        if (this.evento.fecha_realizacion) {
+          // La fecha viene como "YYYY-MM-DD", necesitamos crear un Date
+          const fechaParts = this.evento.fecha_realizacion.split('-');
+          this.evento.fecha_realizacion = new Date(
+            parseInt(fechaParts[0]),
+            parseInt(fechaParts[1]) - 1,
+            parseInt(fechaParts[2])
+          );
+        }
+
+        // Formatear horas a HH:MM para los inputs de tipo time
+        if (this.evento.hora_inicio) {
+          this.evento.hora_inicio = this.evento.hora_inicio.slice(0, 5);
+        }
+        if (this.evento.hora_fin) {
+          this.evento.hora_fin = this.evento.hora_fin.slice(0, 5);
+        }
 
         // Parsear público objetivo
         if (this.evento.publico_objetivo) {
@@ -207,34 +229,40 @@ export class RegistroEventosComponent implements OnInit {
       return;
     }
 
-    // Confirmar actualización
-    if (!confirm("¿Estás seguro de que deseas actualizar este evento?")) {
-      return;
-    }
+    // Mostrar modal de confirmación
+    const dialogRef = this.dialog.open(EditarEventoModalComponent, {
+      data: { id: this.idEvento },
+      height: '288px',
+      width: '328px',
+    });
 
-    // Preparar datos
-    const data = {
-      id: this.idEvento,
-      ...this.evento,
-      fecha_realizacion: this.formatearFecha(this.evento.fecha_realizacion),
-      hora_inicio: this.formatearHora(this.evento.hora_inicio),
-      hora_fin: this.formatearHora(this.evento.hora_fin)
-    };
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.isConfirm) {
+        // Preparar datos
+        const data = {
+          id: this.idEvento,
+          ...this.evento,
+          fecha_realizacion: this.formatearFecha(this.evento.fecha_realizacion),
+          hora_inicio: this.formatearHora(this.evento.hora_inicio),
+          hora_fin: this.formatearHora(this.evento.hora_fin)
+        };
 
-    console.log("Datos a actualizar: ", data);
+        console.log("Datos a actualizar: ", data);
 
-    // Enviar al backend
-    this.eventosService.actualizarEvento(data).subscribe(
-      (response) => {
-        console.log("Evento actualizado: ", response);
-        alert("Evento actualizado exitosamente");
-        this.router.navigate(['/eventos-academicos']);
-      },
-      (error) => {
-        console.error("Error al actualizar evento: ", error);
-        alert("Error al actualizar el evento: " + (error.error?.error || 'Error desconocido'));
+        // Enviar al backend
+        this.eventosService.actualizarEvento(data).subscribe(
+          (response) => {
+            console.log("Evento actualizado: ", response);
+            alert("Evento actualizado exitosamente");
+            this.router.navigate(['/eventos-academicos']);
+          },
+          (error) => {
+            console.error("Error al actualizar evento: ", error);
+            alert("Error al actualizar el evento: " + (error.error?.error || 'Error desconocido'));
+          }
+        );
       }
-    );
+    });
   }
 
   // Función para permitir solo letras, números y espacios

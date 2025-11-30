@@ -54,6 +54,7 @@ import { GraficasScreenComponent } from './screens/graficas-screen/graficas-scre
 import { EventosScreenComponent } from './screens/eventos-screen/eventos-screen.component';
 import { RegistroEventosScreenComponent } from './screens/registro-eventos-screen/registro-eventos-screen.component';
 import { EliminarEventoModalComponent } from './modals/eliminar-evento-modal/eliminar-evento-modal.component';
+import { EditarEventoModalComponent } from './modals/editar-evento-modal/editar-evento-modal.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { EliminarEventoModalComponent } from './modals/eliminar-evento-modal/eli
     GraficasScreenComponent,
     EventosScreenComponent,
     RegistroEventosScreenComponent,
-    EliminarEventoModalComponent
+    EliminarEventoModalComponent,
+    EditarEventoModalComponent
   ],
   imports: [
     BrowserModule,

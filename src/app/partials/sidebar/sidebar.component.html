@@ -38,8 +38,8 @@
           <span>Gráficas</span>
         </li>
 
-        <!-- Eventos Académicos - Available for administrators and teachers -->
-        <li *ngIf="canSeeTeacherItems()" routerLink="/eventos-academicos" routerLinkActive="active"
+        <!-- Eventos Académicos - Available for all users (admin, teachers, students) -->
+        <li *ngIf="canSeeStudentItems()" routerLink="/eventos-academicos" routerLinkActive="active"
           class="eventos-academicos" (click)="closeSidebar()">
           <mat-icon>event</mat-icon>
           <span>Eventos Académicos</span>

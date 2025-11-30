@@ -47,8 +47,8 @@ export class EventosScreenComponent implements OnInit {
 
     // Ajustar columnas según el rol
     if (!this.isAdmin()) {
-      // Si no es admin, quitar columna de eliminar
-      this.displayedColumns = this.displayedColumns.filter(col => col !== 'eliminar');
+      // Si no es admin, quitar columnas de editar y eliminar
+      this.displayedColumns = this.displayedColumns.filter(col => col !== 'eliminar' && col !== 'editar');
     }
 
     // Obtener eventos

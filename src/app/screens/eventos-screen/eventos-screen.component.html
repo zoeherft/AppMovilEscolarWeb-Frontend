@@ -117,7 +117,7 @@
 
                 <!-- Fila cuando no hay datos filtrados -->
                 <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="11">No se encontraron datos que coincidan con el filtro "{{input.value}}"</td>
+                  <td class="mat-cell" [attr.colspan]="displayedColumns.length">No se encontraron datos que coincidan con el filtro "{{input.value}}"</td>
                 </tr>
               </table>
             </div>
