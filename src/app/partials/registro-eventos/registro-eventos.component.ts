@@ -66,7 +66,7 @@ export class RegistroEventosComponent implements OnInit {
       this.editar = true;
       this.idEvento = this.activatedRoute.snapshot.params['id'];
       console.log("ID Evento: ", this.idEvento);
-      
+
       // Cargar datos del evento
       this.cargarDatosEvento();
     } else {
@@ -136,7 +136,7 @@ export class RegistroEventosComponent implements OnInit {
 
     // Mostrar/ocultar programa educativo
     this.mostrarProgramaEducativo = this.publicoSeleccionado['Estudiantes'];
-    
+
     // Limpiar programa educativo si ya no aplica
     if (!this.mostrarProgramaEducativo) {
       this.evento.programa_educativo = '';

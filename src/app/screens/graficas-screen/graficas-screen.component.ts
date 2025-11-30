@@ -104,7 +104,7 @@ export class GraficasScreenComponent implements OnInit{
       (response)=>{
         this.total_user = response;
         console.log("Total usuarios: ", this.total_user);
-        
+
         // Actualizar datos de las gráficas con los valores reales
         this.actualizarGraficas();
       }, (error)=>{

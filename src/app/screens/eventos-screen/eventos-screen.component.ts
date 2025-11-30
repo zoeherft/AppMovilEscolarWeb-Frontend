@@ -37,7 +37,7 @@ export class EventosScreenComponent implements OnInit {
   ngOnInit(): void {
     this.name_user = this.facadeService.getUserCompleteName();
     this.rol = this.facadeService.getUserGroup();
-    
+
     // Validar que haya inicio de sesión
     this.token = this.facadeService.getSessionToken();
     console.log("Token: ", this.token);

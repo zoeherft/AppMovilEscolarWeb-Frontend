@@ -99,7 +99,7 @@
       <div *ngIf="errors.responsable_id" class="invalid-feedback">{{ errors.responsable_id }}</div>
 
       <!-- Descripción breve -->
-      <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
+      <mat-form-field class="mat-input mat-textarea mat-hint-margin" appearance="outline">
         <mat-label>Descripción breve</mat-label>
         <textarea matInput [(ngModel)]="evento.descripcion" placeholder="Escribe una descripción del evento"
           maxlength="300" rows="4"></textarea>
