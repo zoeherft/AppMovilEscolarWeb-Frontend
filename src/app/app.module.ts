@@ -34,7 +34,6 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 //Para el paginator en español
 import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
-// IMPORTANTE: añade el módulo de Sidenav
 import { MatSidenavModule } from '@angular/material/sidenav';
 //Ngx-cookie-service
 import { CookieService } from 'ngx-cookie-service';
