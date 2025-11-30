@@ -25,7 +25,7 @@ export class RegistroMaestrosComponent implements OnInit {
   public editar:boolean = false;
   public token: string = "";
   public idUser: Number = 0;
-
+  public fechaMaxima: Date = new Date();
 
   //Para el select
   public areas: any[] = [

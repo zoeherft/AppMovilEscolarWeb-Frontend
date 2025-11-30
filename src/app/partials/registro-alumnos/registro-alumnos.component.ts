@@ -25,6 +25,7 @@ export class RegistroAlumnosComponent implements OnInit {
   public errors:any={};
   public editar:boolean = false;
   public idUser: Number = 0;
+  public fechaMaxima: Date = new Date();
 
   constructor(
     private router: Router,
