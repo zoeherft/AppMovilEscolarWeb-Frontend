@@ -153,4 +153,24 @@ export class RegistroAdminComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  // Función para campos alfanuméricos (RFC, CURP, etc.) - solo letras y números
+  public soloAlfanumerico(event: KeyboardEvent) {
+    const char = event.key;
+    // Permitir solo letras (A-Z, a-z) y números (0-9)
+    const regex = /^[a-zA-Z0-9]$/;
+    if (!regex.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  // Función para campos solo numéricos
+  public soloNumeros(event: KeyboardEvent) {
+    const char = event.key;
+    // Permitir solo números (0-9)
+    const regex = /^[0-9]$/;
+    if (!regex.test(char)) {
+      event.preventDefault();
+    }
+  }
 }
