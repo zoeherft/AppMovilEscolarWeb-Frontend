@@ -13,6 +13,7 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 import { RegistroAdminComponent } from './partials/registro-admin/registro-admin.component';
 import { RegistroAlumnosComponent } from './partials/registro-alumnos/registro-alumnos.component';
 import { RegistroMaestrosComponent } from './partials/registro-maestros/registro-maestros.component';
+import { RegistroEventosComponent } from './partials/registro-eventos/registro-eventos.component';
 
 //Angular Material
 import {MatCardModule} from '@angular/material/card';
@@ -50,6 +51,9 @@ import { NavbarUserComponent } from './partials/navbar-user/navbar-user.componen
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
 import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 import { GraficasScreenComponent } from './screens/graficas-screen/graficas-screen.component';
+import { EventosScreenComponent } from './screens/eventos-screen/eventos-screen.component';
+import { RegistroEventosScreenComponent } from './screens/registro-eventos-screen/registro-eventos-screen.component';
+import { EliminarEventoModalComponent } from './modals/eliminar-evento-modal/eliminar-evento-modal.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,7 @@ import { GraficasScreenComponent } from './screens/graficas-screen/graficas-scre
     RegistroAdminComponent,
     RegistroAlumnosComponent,
     RegistroMaestrosComponent,
+    RegistroEventosComponent,
     HomeScreenComponent,
     AlumnosScreenComponent,
     MaestrosScreenComponent,
@@ -68,7 +73,10 @@ import { GraficasScreenComponent } from './screens/graficas-screen/graficas-scre
     NavbarUserComponent,
     SidebarComponent,
     EliminarUserModalComponent,
-    GraficasScreenComponent
+    GraficasScreenComponent,
+    EventosScreenComponent,
+    RegistroEventosScreenComponent,
+    EliminarEventoModalComponent
   ],
   imports: [
     BrowserModule,

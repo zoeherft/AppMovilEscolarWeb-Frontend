@@ -9,9 +9,7 @@ import { AdministradoresService } from 'src/app/services/administradores.service
 })
 export class GraficasScreenComponent implements OnInit{
 
-  //Agregar chartjs-plugin-datalabels
   //Variables
-
   public total_user: any = {};
 
   //Histograma
@@ -52,12 +50,12 @@ export class GraficasScreenComponent implements OnInit{
   }
   barChartPlugins = [ DatalabelsPlugin ];
 
-  //Circular
+  //Circular - DATOS DINÁMICOS
   pieChartData = {
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[89, 34, 43],
+        data:[0, 0, 0], // Se actualizarán dinámicamente
         label: 'Registro de usuarios',
         backgroundColor: [
           '#FCFF44',
@@ -72,12 +70,12 @@ export class GraficasScreenComponent implements OnInit{
   }
   pieChartPlugins = [ DatalabelsPlugin ];
 
-  // Doughnut
+  // Doughnut - DATOS DINÁMICOS
   doughnutChartData = {
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[89, 34, 43],
+        data:[0, 0, 0], // Se actualizarán dinámicamente
         label: 'Registro de usuarios',
         backgroundColor: [
           '#F88406',
@@ -106,12 +104,42 @@ export class GraficasScreenComponent implements OnInit{
       (response)=>{
         this.total_user = response;
         console.log("Total usuarios: ", this.total_user);
+        
+        // Actualizar datos de las gráficas con los valores reales
+        this.actualizarGraficas();
       }, (error)=>{
         console.log("Error al obtener total de usuarios ", error);
-
         alert("No se pudo obtener el total de cada rol de usuarios");
       }
     );
   }
 
+  // Función para actualizar las gráficas con datos dinámicos
+  private actualizarGraficas(): void {
+    const admins = this.total_user.admins || 0;
+    const maestros = this.total_user.maestros || 0;
+    const alumnos = this.total_user.alumnos || 0;
+
+    // Actualizar gráfica circular (pie)
+    this.pieChartData = {
+      ...this.pieChartData,
+      datasets: [
+        {
+          ...this.pieChartData.datasets[0],
+          data: [admins, maestros, alumnos]
+        }
+      ]
+    };
+
+    // Actualizar gráfica de dona (doughnut)
+    this.doughnutChartData = {
+      ...this.doughnutChartData,
+      datasets: [
+        {
+          ...this.doughnutChartData.datasets[0],
+          data: [admins, maestros, alumnos]
+        }
+      ]
+    };
+  }
 }

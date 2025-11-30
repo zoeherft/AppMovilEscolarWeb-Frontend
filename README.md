@@ -1,6 +1,6 @@
-# 🎓 App Móvil Escolar - Frontend
+# 🎓 Sistema de Gestión de Eventos Académicos - Frontend
 
-Aplicación web desarrollada con **Angular 16** y **Angular Material** para el sistema de gestión escolar. Permite administrar usuarios (Administradores, Maestros y Alumnos) con operaciones CRUD completas.
+Aplicación web desarrollada con **Angular 16** y **Angular Material** para la gestión de eventos académicos universitarios. Permite administrar eventos (Conferencias, Talleres, Seminarios, Concursos) y usuarios con control de acceso basado en roles.
 
 ## 📋 Tabla de Contenidos
 
@@ -11,22 +11,22 @@ Aplicación web desarrollada con **Angular 16** y **Angular Material** para el s
 - [Configuración del Entorno](#-configuración-del-entorno)
 - [Ejecución](#-ejecución)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Funcionalidades Implementadas](#-funcionalidades-implementadas)
-- [Pantallas de la Aplicación](#-pantallas-de-la-aplicación)
-- [Servicios](#-servicios)
+- [Funcionalidades](#-funcionalidades)
+- [Pantallas](#-pantallas)
 
 ---
 
 ## ✨ Características
 
+- ✅ **CRUD de Eventos Académicos** con validaciones completas
+- ✅ **Control de acceso por roles** (Admin, Maestro, Alumno)
 - ✅ **Autenticación** con manejo de tokens (cookies)
-- ✅ **CRUD completo** para Administradores, Maestros y Alumnos
-- ✅ **Tablas interactivas** con paginación, ordenamiento y filtrado
+- ✅ **Tablas dinámicas** con paginación, ordenamiento y filtrado
 - ✅ **Formularios reactivos** con validación en tiempo real
-- ✅ **Modales de confirmación** para eliminación de usuarios
+- ✅ **Gráficas estadísticas** con datos dinámicos del API
 - ✅ **Diseño responsivo** con Angular Material y Bootstrap
-- ✅ **Gráficas estadísticas** con Chart.js
-- ✅ **Navegación** con sidebar y rutas protegidas
+- ✅ **DatePicker** para selección de fechas
+- ✅ **Modales de confirmación** para eliminación
 
 ---
 
@@ -35,24 +35,20 @@ Aplicación web desarrollada con **Angular 16** y **Angular Material** para el s
 | Tecnología | Versión | Descripción |
 |------------|---------|-------------|
 | Angular | 16.2.0 | Framework principal |
-| Angular Material | 16.2.14 | Componentes UI |
-| Bootstrap | 5.3.8 | Estilos CSS |
+| Angular Material | 16.2.14 | Componentes UI (Tables, DatePicker, Forms) |
+| Bootstrap | 5.3.8 | Estilos CSS responsivos |
 | Bootstrap Icons | 1.13.1 | Iconografía |
-| ng2-charts | 4.1.1 | Gráficas |
-| ngx-cookie-service | 16.1.0 | Manejo de cookies |
+| ng2-charts | 4.1.1 | Gráficas dinámicas |
+| ngx-cookie-service | 16.1.0 | Manejo de cookies/tokens |
 | ngx-mask | 16.4.2 | Máscaras de input |
-| RxJS | 7.8.0 | Programación reactiva |
 
 ---
 
 ## 📦 Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instalado:
-
 1. **Node.js 18.x o superior**
    ```bash
    node --version
-   # Debe mostrar v18.x.x o superior
    ```
 
 2. **npm 9.x o superior**
@@ -62,10 +58,7 @@ Antes de comenzar, asegúrate de tener instalado:
 
 3. **Angular CLI 16.x**
    ```bash
-   # Instalar globalmente
    npm install -g @angular/cli@16
-
-   # Verificar instalación
    ng version
    ```
 
@@ -78,7 +71,7 @@ Antes de comenzar, asegúrate de tener instalado:
 ### Paso 1: Navegar al proyecto
 
 ```bash
-cd Frontend
+cd app-movil-escolar-frontend
 ```
 
 ### Paso 2: Instalar dependencias
@@ -87,44 +80,31 @@ cd Frontend
 npm install
 ```
 
-> ⏳ Este proceso puede tomar varios minutos la primera vez.
-
 ### Paso 3: Verificar instalación
 
 ```bash
 ng version
 ```
 
-Deberías ver algo como:
-```
-Angular CLI: 16.2.11
-Node: 18.x.x
-Package Manager: npm 9.x.x
-```
-
 ---
 
 ## ⚙️ Configuración del Entorno
 
-### Archivo de Entorno de Desarrollo
-
-El archivo `src/environments/environment.ts` contiene la configuración para desarrollo:
+### Desarrollo (`src/environments/environment.ts`)
 
 ```typescript
 export const environment = {
   production: false,
-  url_api: 'http://127.0.0.1:8000'  // URL del backend
+  url_api: 'http://127.0.0.1:8000'
 };
 ```
 
-### Archivo de Entorno de Producción
-
-El archivo `src/environments/environment.prod.ts` contiene la configuración para producción:
+### Producción (`src/environments/environment.prod.ts`)
 
 ```typescript
 export const environment = {
   production: true,
-  url_api: 'https://tu-backend-produccion.com'  // Cambiar por URL real
+  url_api: 'https://tu-backend-produccion.com'
 };
 ```
 
@@ -132,261 +112,172 @@ export const environment = {
 
 ## ▶️ Ejecución
 
-### Modo Desarrollo
-
 ```bash
 # Iniciar servidor de desarrollo
 ng serve
 
-# O usando npm
-npm start
-```
-
-La aplicación estará disponible en:
-```
-http://localhost:4200/
-```
-
-### Opciones adicionales
-
-```bash
-# Abrir automáticamente en el navegador
+# Abrir automáticamente en navegador
 ng serve --open
 
-# Especificar puerto diferente
+# Puerto personalizado
 ng serve --port 4300
-
-# Permitir acceso desde red local
-ng serve --host 0.0.0.0
 ```
 
-### Compilar para Producción
-
-```bash
-ng build --configuration production
-```
-
-Los archivos compilados estarán en la carpeta `dist/`.
+La aplicación estará disponible en: `http://localhost:4200/`
 
 ---
 
 ## 📁 Estructura del Proyecto
 
 ```
-Frontend/
+app-movil-escolar-frontend/
 ├── src/
 │   ├── app/
-│   │   ├── layouts/                    # Layouts de la aplicación
-│   │   │   ├── auth-layout/            # Layout para login/registro
-│   │   │   └── dashboard-layout/       # Layout principal con sidebar
+│   │   ├── layouts/
+│   │   │   ├── auth-layout/           # Layout para login
+│   │   │   └── dashboard-layout/      # Layout principal con sidebar
 │   │   │
-│   │   ├── screens/                    # Pantallas principales
-│   │   │   ├── login-screen/           # Pantalla de login
-│   │   │   ├── home-screen/            # Dashboard principal
-│   │   │   ├── admin-screen/           # Lista de administradores
-│   │   │   ├── maestros-screen/        # Lista de maestros
-│   │   │   ├── alumnos-screen/         # Lista de alumnos
-│   │   │   ├── registro-usuarios-screen/ # Formulario registro/edición
-│   │   │   └── graficas-screen/        # Gráficas estadísticas
+│   │   ├── screens/
+│   │   │   ├── login-screen/          # Inicio de sesión
+│   │   │   ├── home-screen/           # Dashboard principal
+│   │   │   ├── eventos-screen/        # 📅 Lista de eventos académicos
+│   │   │   ├── registro-eventos-screen/ # 📅 Formulario de eventos
+│   │   │   ├── admin-screen/          # Lista de administradores
+│   │   │   ├── maestros-screen/       # Lista de maestros
+│   │   │   ├── alumnos-screen/        # Lista de alumnos
+│   │   │   ├── registro-usuarios-screen/
+│   │   │   └── graficas-screen/       # Gráficas con datos dinámicos
 │   │   │
-│   │   ├── partials/                   # Componentes reutilizables
-│   │   │   ├── navbar-user/            # Barra de navegación superior
-│   │   │   ├── sidebar/                # Menú lateral
-│   │   │   ├── registro-admin/         # Formulario de administrador
-│   │   │   ├── registro-alumnos/       # Formulario de alumno
-│   │   │   └── registro-maestros/      # Formulario de maestro
+│   │   ├── partials/
+│   │   │   ├── registro-eventos/      # 📅 Formulario de evento
+│   │   │   ├── registro-admin/
+│   │   │   ├── registro-alumnos/
+│   │   │   ├── registro-maestros/
+│   │   │   ├── navbar-user/
+│   │   │   └── sidebar/
 │   │   │
-│   │   ├── modals/                     # Modales
-│   │   │   └── eliminar-user-modal/    # Modal confirmación eliminar
+│   │   ├── modals/
+│   │   │   ├── eliminar-evento-modal/ # 📅 Confirmación eliminar evento
+│   │   │   └── eliminar-user-modal/
 │   │   │
-│   │   ├── services/                   # Servicios HTTP
-│   │   │   ├── facade.service.ts       # Servicio principal (auth, cookies)
+│   │   ├── services/
+│   │   │   ├── eventos.service.ts     # 📅 Servicio HTTP de eventos
+│   │   │   ├── facade.service.ts      # Auth y cookies
 │   │   │   ├── administradores.service.ts
 │   │   │   ├── maestros.service.ts
 │   │   │   ├── alumnos.service.ts
-│   │   │   └── tools/                  # Utilidades
-│   │   │       ├── validator.service.ts
-│   │   │       └── errors.service.ts
+│   │   │   └── tools/
 │   │   │
-│   │   ├── shared/                     # Utilidades compartidas
-│   │   │   └── spanish-paginator-intl.ts
-│   │   │
-│   │   ├── app.module.ts               # Módulo principal
-│   │   ├── app-routing.module.ts       # Configuración de rutas
-│   │   └── app.component.ts
+│   │   ├── app.module.ts
+│   │   └── app-routing.module.ts
 │   │
-│   ├── assets/                         # Recursos estáticos
-│   │   ├── images/
-│   │   └── fonts/
-│   │
-│   ├── environments/                   # Configuración de entornos
-│   │   ├── environment.ts              # Desarrollo
-│   │   └── environment.prod.ts         # Producción
-│   │
-│   ├── styles.scss                     # Estilos globales
-│   └── index.html
+│   ├── environments/
+│   └── styles.scss
 │
-├── angular.json                        # Configuración Angular CLI
-├── package.json                        # Dependencias
-├── tsconfig.json                       # Configuración TypeScript
+├── angular.json
+├── package.json
 └── README.md
 ```
 
 ---
 
-## 🎯 Funcionalidades Implementadas
+## 🎯 Funcionalidades
 
-### 🔐 Autenticación
+### 📅 Eventos Académicos (NUEVO)
 
-| Funcionalidad | Estado | Descripción |
-|---------------|--------|-------------|
-| Login | ✅ | Inicio de sesión con email y contraseña |
-| Logout | ✅ | Cierre de sesión y limpieza de cookies |
-| Protección de rutas | ✅ | Redirección si no hay token |
-| Manejo de tokens | ✅ | Almacenamiento seguro en cookies |
+| Funcionalidad | Rol Admin | Rol Maestro | Rol Alumno |
+|---------------|-----------|-------------|------------|
+| Ver lista de eventos | ✅ Todos | ✅ Todos | ✅ Solo su programa |
+| Ver detalle de evento | ✅ | ✅ | ✅ |
+| Crear evento | ✅ | ❌ | ❌ |
+| Editar evento | ✅ | ❌ | ❌ |
+| Eliminar evento | ✅ | ❌ | ❌ |
 
-### 👨‍💼 Administradores
+### Validaciones del Formulario de Eventos
 
-| Funcionalidad | Estado | Descripción |
-|---------------|--------|-------------|
-| Listar | ✅ | Tabla con todos los administradores |
-| Crear | ✅ | Formulario de registro |
-| Editar | ✅ | Formulario de edición con datos precargados |
-| Eliminar | ✅ | Modal de confirmación + eliminación |
-| Validación | ✅ | Validación de campos en formularios |
+| Campo | Validación |
+|-------|------------|
+| Nombre del evento | Alfanumérico con espacios, requerido |
+| Tipo de evento | Selección requerida |
+| Fecha de realización | No puede ser anterior a hoy |
+| Hora inicio/fin | Hora inicio debe ser menor que hora fin |
+| Lugar | Requerido |
+| Público objetivo | Al menos uno seleccionado |
+| Programa educativo | Requerido si público incluye "Alumnos" |
+| Descripción | Máximo 300 caracteres |
+| Cupo máximo | Máximo 3 dígitos (1-999) |
 
-### 👨‍🏫 Maestros
+### 👥 Gestión de Usuarios
 
-| Funcionalidad | Estado | Descripción |
-|---------------|--------|-------------|
-| Listar | ✅ | Tabla con paginación, ordenamiento y filtro |
-| Crear | ✅ | Formulario con selección de materias |
-| Editar | ✅ | Formulario de edición con datos precargados |
-| Eliminar | ✅ | Modal de confirmación + eliminación |
-| Filtrar | ✅ | Búsqueda en tiempo real |
-| Ordenar | ✅ | Ordenamiento por columnas |
+- CRUD completo para Administradores, Maestros y Alumnos
+- Tablas con paginación, ordenamiento y filtros
+- Validación de formularios
 
-### 👨‍🎓 Alumnos
+### 📊 Gráficas Dinámicas
 
-| Funcionalidad | Estado | Descripción |
-|---------------|--------|-------------|
-| Listar | ✅ | Tabla con paginación, ordenamiento y filtro |
-| Crear | ✅ | Formulario de registro |
-| Editar | ✅ | Formulario de edición con datos precargados |
-| Eliminar | ✅ | Modal de confirmación + eliminación |
-| Filtrar | ✅ | Búsqueda en tiempo real |
-| Ordenar | ✅ | Ordenamiento por columnas |
-
-### 📊 Estadísticas
-
-| Funcionalidad | Estado | Descripción |
-|---------------|--------|-------------|
-| Gráfica de barras | ✅ | Total de usuarios por rol |
-| Gráfica de pastel | ✅ | Distribución porcentual |
+- Gráfica circular (Pie) con total de usuarios por rol
+- Gráfica de dona (Doughnut) con distribución de usuarios
+- Datos obtenidos en tiempo real del API
 
 ---
 
-## 📱 Pantallas de la Aplicación
+## 📱 Pantallas Principales
 
 ### 1. Login (`/login`)
-- Formulario de inicio de sesión
-- Validación de email y contraseña
-- Redirección al dashboard tras login exitoso
+- Inicio de sesión con email y contraseña
 
-### 2. Registro de Usuarios (`/registro-usuarios`)
-- Selección de tipo de usuario (Admin/Maestro/Alumno)
-- Formulario dinámico según el tipo seleccionado
-- Validación completa de campos
+### 2. Dashboard (`/home`)
+- Tarjetas con estadísticas
+- Accesos rápidos
 
-### 3. Edición de Usuarios (`/registro-usuarios/:rol/:id`)
-- Carga automática de datos del usuario
-- Campos de contraseña ocultos en modo edición
-- Actualización de datos
+### 3. Eventos Académicos (`/eventos-academicos`) 📅
+- Tabla con todos los eventos
+- Filtro por búsqueda
+- Columnas: Nombre, Tipo, Fecha, Hora, Lugar, Responsable
+- Botones Editar/Eliminar (solo Admin)
 
-### 4. Lista de Administradores (`/administrador`)
-- Tabla con datos de administradores
-- Botones de editar y eliminar
-- Validación de permisos
+### 4. Registro de Evento (`/registro-eventos`) 📅
+- Formulario completo con validaciones
+- DatePicker para fecha
+- Checkboxes para público objetivo
+- Select condicional para programa educativo
 
-### 5. Lista de Maestros (`/maestros`)
-- Tabla con Material Table
-- Paginación (5, 10, 20 registros)
-- Ordenamiento por columnas
-- Filtro de búsqueda
-- Botones de editar y eliminar
-
-### 6. Lista de Alumnos (`/alumnos`)
-- Tabla con Material Table
-- Paginación (5, 10, 20 registros)
-- Ordenamiento por columnas
-- Filtro de búsqueda
-- Botones de editar y eliminar
-
-### 7. Dashboard (`/home`)
-- Tarjetas con conteo de usuarios
-- Accesos rápidos a cada sección
-
-### 8. Gráficas (`/graficas`)
-- Gráfica de barras
-- Gráfica de pastel
+### 5. Gráficas (`/graficas`)
+- Visualización de datos dinámicos
+- Total de usuarios por rol
 
 ---
 
-## 🔌 Servicios
-
-### FacadeService
-Servicio principal que maneja:
-- Login/Logout
-- Almacenamiento de cookies
-- Obtención de datos del usuario en sesión
+## 🔌 Servicio de Eventos
 
 ```typescript
-// Métodos principales
-login(username, password)      // Iniciar sesión
-logout()                       // Cerrar sesión
-getSessionToken()              // Obtener token
-getUserCompleteName()          // Nombre completo del usuario
-getUserGroup()                 // Rol del usuario (admin/maestro/alumno)
-saveUserData(data)             // Guardar datos en cookies
-destroyUser()                  // Limpiar cookies
-```
+// eventos.service.ts - Métodos principales
 
-### AdministradoresService
-```typescript
-// Métodos CRUD
-registrarAdmin(data)           // Crear administrador
-obtenerListaAdmins()           // Listar todos
-obtenerAdminPorID(id)          // Obtener por ID
-actualizarAdmin(data)          // Actualizar
-eliminarAdmin(id)              // Eliminar
-getTotalUsuarios()             // Estadísticas
-```
+// Obtener esquema vacío de evento
+esquemaEvento(): EventoAcademico
 
-### MaestrosService
-```typescript
-// Métodos CRUD
-registrarMaestro(data)         // Crear maestro
-obtenerListaMaestros()         // Listar todos
-obtenerMaestroPorID(id)        // Obtener por ID
-actualizarMaestro(data)        // Actualizar
-eliminarMaestro(id)            // Eliminar
-```
+// Validar datos del formulario
+validarEvento(data: EventoAcademico, editando: boolean): string[]
 
-### AlumnosService
-```typescript
-// Métodos CRUD
-registrarAlumno(data)          // Crear alumno
-obtenerListaAlumnos()          // Listar todos
-obtenerAlumnoPorID(id)         // Obtener por ID
-actualizarAlumno(data)         // Actualizar
-eliminarAlumno(id)             // Eliminar
+// CRUD
+registrarEvento(data: EventoAcademico): Observable<any>
+obtenerEventos(): Observable<EventoAcademico[]>
+obtenerEventoPorId(id: number): Observable<EventoAcademico>
+actualizarEvento(data: EventoAcademico): Observable<any>
+eliminarEvento(id: number): Observable<any>
+
+// Catálogos
+getResponsables(): Observable<any[]>
+getTiposEvento(): {value, label}[]
+getPublicoObjetivo(): {value, label}[]
+getProgramasEducativos(): {value, label}[]
 ```
 
 ---
 
-## 🔧 Solución de Problemas Comunes
+## 🔧 Solución de Problemas
 
-### Error: "Cannot find module '@angular/...'"
+### Error: "Cannot find module"
 ```bash
 rm -rf node_modules
 npm install
@@ -394,74 +285,38 @@ npm install
 
 ### Error: "Port 4200 is already in use"
 ```bash
-# Usar otro puerto
 ng serve --port 4300
-
-# O matar el proceso en el puerto 4200
-lsof -ti:4200 | xargs kill
 ```
 
-### Error: "CORS blocked"
-Verificar que el backend tenga CORS configurado correctamente y esté corriendo.
-
-### Error: "Token expired" o errores 401
-1. Cerrar sesión
-2. Volver a iniciar sesión para obtener un nuevo token
-
-### La página no carga después de login
-Verificar que las cookies estén habilitadas en el navegador.
+### Error 401 Unauthorized
+Cerrar sesión y volver a iniciar sesión.
 
 ---
 
-## 🧪 Ejecutar Tests
-
-```bash
-# Tests unitarios
-ng test
-
-# Tests con cobertura
-ng test --code-coverage
-```
-
----
-
-## 📦 Build para Producción
-
-```bash
-# Compilar
-ng build --configuration production
-
-# Los archivos estarán en dist/app-movil-escolar-webapp/
-```
-
----
-
-## 🔄 Flujo de Trabajo Típico
+## 🔄 Flujo de Trabajo
 
 1. **Iniciar Backend**
    ```bash
-   cd Backend
+   cd app-movil-escolar-backend
    source venv/bin/activate
    python manage.py runserver
    ```
 
 2. **Iniciar Frontend**
    ```bash
-   cd Frontend
+   cd app-movil-escolar-frontend
    ng serve --open
    ```
 
-3. **Acceder a la aplicación**
-   - Abrir `http://localhost:4200`
-   - Registrar un usuario o hacer login
-   - Navegar por las diferentes secciones
+3. **Acceder**: `http://localhost:4200`
 
 ---
 
 ## 👥 Autores
 
-- Desarrollo Web - Séptimo Semestre
-- Universidad
+- **Materia**: Desarrollo de Aplicaciones Móviles
+- **Semestre**: Séptimo Semestre  
+- **Fecha**: Noviembre 2025
 
 ---
 
