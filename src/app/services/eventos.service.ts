@@ -219,4 +219,16 @@ export class EventosService {
     }
     return this.http.get<any>(`${environment.url_api}/responsables/`, { headers });
   }
+
+  // Obtener estadísticas de eventos (para gráficas)
+  public obtenerEstadisticasEventos(): Observable<any> {
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
+    return this.http.get<any>(`${environment.url_api}/estadisticas-eventos/`, { headers });
+  }
 }

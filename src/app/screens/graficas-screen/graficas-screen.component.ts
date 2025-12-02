@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 import { AdministradoresService } from 'src/app/services/administradores.service';
+import { EventosService } from 'src/app/services/eventos.service';
 
 @Component({
   selector: 'app-graficas-screen',
@@ -11,14 +12,15 @@ export class GraficasScreenComponent implements OnInit{
 
   //Variables
   public total_user: any = {};
+  public estadisticas_eventos: any = {};
 
   //Histograma
   lineChartData = {
-    labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    labels: [] as string[],
     datasets: [
       {
-        data:[89, 34, 43, 54, 28, 74, 93],
-        label: 'Registro de materias',
+        data: [] as number[],
+        label: 'Eventos por nombre',
         backgroundColor: '#F88406'
       }
     ]
@@ -30,11 +32,11 @@ export class GraficasScreenComponent implements OnInit{
 
   //Barras
   barChartData = {
-    labels: ["Congreso", "FePro", "Presentación Doctoral", "Feria Matemáticas", "T-System"],
+    labels: [] as string[],
     datasets: [
       {
-        data:[34, 43, 54, 28, 74],
-        label: 'Eventos Académicos',
+        data: [] as number[],
+        label: 'Eventos por Tipo',
         backgroundColor: [
           '#F88406',
           '#FCFF44',
@@ -50,12 +52,12 @@ export class GraficasScreenComponent implements OnInit{
   }
   barChartPlugins = [ DatalabelsPlugin ];
 
-  //Circular - DATOS DINÁMICOS
+  //Circular
   pieChartData = {
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[0, 0, 0], // Se actualizarán dinámicamente
+        data:[0, 0, 0],
         label: 'Registro de usuarios',
         backgroundColor: [
           '#FCFF44',
@@ -70,12 +72,12 @@ export class GraficasScreenComponent implements OnInit{
   }
   pieChartPlugins = [ DatalabelsPlugin ];
 
-  // Doughnut - DATOS DINÁMICOS
+  //Doughnut
   doughnutChartData = {
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[0, 0, 0], // Se actualizarán dinámicamente
+        data:[0, 0, 0],
         label: 'Registro de usuarios',
         backgroundColor: [
           '#F88406',
@@ -91,22 +93,21 @@ export class GraficasScreenComponent implements OnInit{
   doughnutChartPlugins = [ DatalabelsPlugin ];
 
   constructor(
-    private administradoresServices: AdministradoresService
+    private administradoresServices: AdministradoresService,
+    private eventosService: EventosService
   ) { }
 
   ngOnInit(): void {
     this.obtenerTotalUsers();
+    this.obtenerEstadisticasEventos();
   }
 
-  // Función para obtener el total de usuarios registrados
   public obtenerTotalUsers(){
     this.administradoresServices.getTotalUsuarios().subscribe(
       (response)=>{
         this.total_user = response;
         console.log("Total usuarios: ", this.total_user);
-
-        // Actualizar datos de las gráficas con los valores reales
-        this.actualizarGraficas();
+        this.actualizarGraficasUsuarios();
       }, (error)=>{
         console.log("Error al obtener total de usuarios ", error);
         alert("No se pudo obtener el total de cada rol de usuarios");
@@ -114,13 +115,23 @@ export class GraficasScreenComponent implements OnInit{
     );
   }
 
-  // Función para actualizar las gráficas con datos dinámicos
-  private actualizarGraficas(): void {
+  public obtenerEstadisticasEventos(){
+    this.eventosService.obtenerEstadisticasEventos().subscribe(
+      (response)=>{
+        this.estadisticas_eventos = response;
+        console.log("Estadísticas eventos: ", this.estadisticas_eventos);
+        this.actualizarGraficasEventos();
+      }, (error)=>{
+        console.log("Error al obtener estadísticas de eventos ", error);
+      }
+    );
+  }
+
+  private actualizarGraficasUsuarios(): void {
     const admins = this.total_user.admins || 0;
     const maestros = this.total_user.maestros || 0;
     const alumnos = this.total_user.alumnos || 0;
 
-    // Actualizar gráfica circular (pie)
     this.pieChartData = {
       ...this.pieChartData,
       datasets: [
@@ -131,7 +142,6 @@ export class GraficasScreenComponent implements OnInit{
       ]
     };
 
-    // Actualizar gráfica de dona (doughnut)
     this.doughnutChartData = {
       ...this.doughnutChartData,
       datasets: [
@@ -141,5 +151,67 @@ export class GraficasScreenComponent implements OnInit{
         }
       ]
     };
+  }
+
+  private actualizarGraficasEventos(): void {
+    if (this.estadisticas_eventos.por_tipo && this.estadisticas_eventos.por_tipo.length > 0) {
+      const labelsTipo = this.estadisticas_eventos.por_tipo.map((item: any) => item.tipo_evento);
+      const datosTipo = this.estadisticas_eventos.por_tipo.map((item: any) => item.cantidad);
+
+      this.barChartData = {
+        labels: labelsTipo,
+        datasets: [
+          {
+            data: datosTipo,
+            label: 'Eventos por Tipo',
+            backgroundColor: [
+              '#F88406',
+              '#FCFF44',
+              '#82D3FB',
+              '#FB82F5',
+              '#2AD84A'
+            ]
+          }
+        ]
+      };
+    } else {
+      this.barChartData = {
+        labels: ['Sin eventos registrados'],
+        datasets: [
+          {
+            data: [0],
+            label: 'Eventos por Tipo',
+            backgroundColor: ['#CCCCCC']
+          }
+        ]
+      };
+    }
+
+    if (this.estadisticas_eventos.por_nombre && this.estadisticas_eventos.por_nombre.length > 0) {
+      const labelsNombre = this.estadisticas_eventos.por_nombre.map((item: any) => item.nombre_evento);
+      const datosNombre = this.estadisticas_eventos.por_nombre.map((item: any) => item.cantidad);
+
+      this.lineChartData = {
+        labels: labelsNombre,
+        datasets: [
+          {
+            data: datosNombre,
+            label: 'Eventos por nombre',
+            backgroundColor: '#F88406'
+          }
+        ]
+      };
+    } else {
+      this.lineChartData = {
+        labels: ['Sin eventos registrados'],
+        datasets: [
+          {
+            data: [0],
+            label: 'Eventos por nombre',
+            backgroundColor: '#CCCCCC'
+          }
+        ]
+      };
+    }
   }
 }
