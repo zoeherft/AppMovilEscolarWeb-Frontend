@@ -162,6 +162,13 @@ export class RegistroEventosComponent implements OnInit {
     }
   }
 
+  // Manejador para actualizar la hora en tiempo real cuando cambia en el timepicker
+  public onTimeChanged(time: string, campo: 'hora_inicio' | 'hora_fin'): void {
+    if (time) {
+      this.evento[campo] = time;
+    }
+  }
+
   // Formatear fecha para enviar al backend
   private formatearFecha(fecha: Date | string): string {
     if (!fecha) return '';
@@ -193,35 +200,35 @@ export class RegistroEventosComponent implements OnInit {
     let horas = parseInt(horasStr, 10);
     const minutos = minutosStr || '00';
     const periodo = horas >= 12 ? 'PM' : 'AM';
-    
+
     if (horas === 0) {
       horas = 12;
     } else if (horas > 12) {
       horas = horas - 12;
     }
-    
+
     return `${horas.toString().padStart(2, '0')}:${minutos.slice(0, 2)} ${periodo}`;
   }
 
   // Convertir hora de formato 12h (hh:mm AM/PM) a 24h (HH:MM)
   private convertirA24Horas(hora12: string): string {
     if (!hora12) return '';
-    
+
     // Separar hora y periodo (AM/PM)
     const partes = hora12.trim().split(' ');
     if (partes.length !== 2) return hora12.slice(0, 5);
-    
+
     const [tiempo, periodo] = partes;
     const [horasStr, minutosStr] = tiempo.split(':');
     let horas = parseInt(horasStr, 10);
     const minutos = minutosStr || '00';
-    
+
     if (periodo.toUpperCase() === 'PM' && horas !== 12) {
       horas += 12;
     } else if (periodo.toUpperCase() === 'AM' && horas === 12) {
       horas = 0;
     }
-    
+
     return `${horas.toString().padStart(2, '0')}:${minutos.slice(0, 2)}`;
   }
 
