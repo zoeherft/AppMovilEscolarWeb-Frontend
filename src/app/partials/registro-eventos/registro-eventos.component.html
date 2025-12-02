@@ -43,7 +43,7 @@
         <input matInput [ngxTimepicker]="pickerInicio" [(ngModel)]="evento.hora_inicio"
           placeholder="Selecciona la hora de inicio" readonly [format]="12">
         <mat-icon matSuffix class="timepicker-icon" (click)="pickerInicio.open()">access_time</mat-icon>
-        <ngx-material-timepicker #pickerInicio [enableKeyboardInput]="true" (timeChanged)="onTimeChanged($event, 'hora_inicio')"></ngx-material-timepicker>
+        <ngx-material-timepicker #pickerInicio [enableKeyboardInput]="true" [defaultTime]="evento.hora_inicio" (timeChanged)="onTimeChanged($event, 'hora_inicio')"></ngx-material-timepicker>
       </mat-form-field>
       <div *ngIf="errors.hora_inicio" class="invalid-feedback">{{ errors.hora_inicio }}</div>
 
@@ -53,7 +53,7 @@
         <input matInput [ngxTimepicker]="pickerFin" [(ngModel)]="evento.hora_fin"
           placeholder="Selecciona la hora de fin" readonly [format]="12">
         <mat-icon matSuffix class="timepicker-icon" (click)="pickerFin.open()">access_time</mat-icon>
-        <ngx-material-timepicker #pickerFin [enableKeyboardInput]="true" (timeChanged)="onTimeChanged($event, 'hora_fin')"></ngx-material-timepicker>
+        <ngx-material-timepicker #pickerFin [enableKeyboardInput]="true" [defaultTime]="evento.hora_fin" (timeChanged)="onTimeChanged($event, 'hora_fin')"></ngx-material-timepicker>
       </mat-form-field>
       <div *ngIf="errors.hora_fin" class="invalid-feedback">{{ errors.hora_fin }}</div>
 

@@ -166,6 +166,24 @@ export class RegistroEventosComponent implements OnInit {
   public onTimeChanged(time: string, campo: 'hora_inicio' | 'hora_fin'): void {
     if (time) {
       this.evento[campo] = time;
+      // Validar en tiempo real si la hora de fin es posterior a la hora de inicio
+      this.validarHorario();
+    }
+  }
+
+  // Validar que la hora de fin sea posterior a la hora de inicio
+  private validarHorario(): void {
+    // Limpiar errores previos de horario
+    delete this.errors['hora_fin'];
+    delete this.errors['hora_inicio'];
+
+    if (this.evento.hora_inicio && this.evento.hora_fin) {
+      const horaInicio24 = this.convertirA24Horas(this.evento.hora_inicio);
+      const horaFin24 = this.convertirA24Horas(this.evento.hora_fin);
+
+      if (horaInicio24 >= horaFin24) {
+        this.errors['hora_fin'] = 'La hora de fin debe ser posterior a la hora de inicio';
+      }
     }
   }
 
