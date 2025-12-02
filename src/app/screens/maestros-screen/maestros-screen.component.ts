@@ -61,18 +61,15 @@ export class MaestrosScreenComponent implements OnInit {
         this.lista_maestros = response;
         console.log("Lista users: ", this.lista_maestros);
         if (this.lista_maestros.length > 0) {
-          //Agregar datos del nombre e email
           this.lista_maestros.forEach(usuario => {
             usuario.first_name = usuario.user.first_name;
             usuario.last_name = usuario.user.last_name;
             usuario.email = usuario.user.email;
           });
           console.log("Maestros: ", this.lista_maestros);
-
-          this.dataSource = new MatTableDataSource<DatosUsuario>(this.lista_maestros as DatosUsuario[]);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
         }
+        // Solo actualizar los datos, no recrear el dataSource
+        this.dataSource.data = this.lista_maestros as DatosUsuario[];
       }, (error) => {
         console.error("Error al obtener la lista de maestros: ", error);
         alert("No se pudo obtener la lista de maestros");

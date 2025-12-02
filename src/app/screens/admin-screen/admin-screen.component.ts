@@ -66,11 +66,9 @@ export class AdminScreenComponent implements OnInit {
             admin.last_name = admin.user.last_name;
             admin.email = admin.user.email;
           });
-
-          this.dataSource = new MatTableDataSource<DatosAdmin>(this.lista_admins as DatosAdmin[]);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
         }
+        // Solo actualizar los datos, no recrear el dataSource
+        this.dataSource.data = this.lista_admins as DatosAdmin[];
       }, (error) => {
         alert("No se pudo obtener la lista de administradores");
       }
