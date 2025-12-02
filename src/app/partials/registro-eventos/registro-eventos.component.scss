@@ -127,6 +127,16 @@ mat-form-field{
   font-size: 12px;
 }
 
+// Estilos para el timepicker
+.timepicker-icon {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.54);
+  
+  &:hover {
+    color: #0092B8;
+  }
+}
+
 /* =========================
    Ajustes para dispositivos móviles
    ========================= */

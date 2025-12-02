@@ -56,6 +56,33 @@ export class EventosService {
     ];
   }
 
+  // Función auxiliar para convertir hora de formato 12h (hh:mm AM/PM) a 24h (HH:MM) para comparación
+  private convertirA24HorasParaComparar(hora: string): string {
+    if (!hora) return '';
+    
+    // Si ya está en formato 24h (no tiene AM/PM)
+    if (!hora.includes('AM') && !hora.includes('PM')) {
+      return hora.slice(0, 5);
+    }
+    
+    // Separar hora y periodo (AM/PM)
+    const partes = hora.trim().split(' ');
+    if (partes.length !== 2) return hora.slice(0, 5);
+    
+    const [tiempo, periodo] = partes;
+    const [horasStr, minutosStr] = tiempo.split(':');
+    let horas = parseInt(horasStr, 10);
+    const minutos = minutosStr || '00';
+    
+    if (periodo.toUpperCase() === 'PM' && horas !== 12) {
+      horas += 12;
+    } else if (periodo.toUpperCase() === 'AM' && horas === 12) {
+      horas = 0;
+    }
+    
+    return `${horas.toString().padStart(2, '0')}:${minutos.slice(0, 2)}`;
+  }
+
   // Validación del formulario
   public validarEvento(data: any, editar: boolean): any {
     console.log("Validando evento... ", data);
@@ -81,6 +108,7 @@ export class EventosService {
       const fechaEvento = new Date(data["fecha_realizacion"]);
       const hoy = new Date();
       hoy.setHours(0, 0, 0, 0);
+      fechaEvento.setHours(0, 0, 0, 0);
       if (fechaEvento < hoy) {
         error["fecha_realizacion"] = "La fecha no puede ser anterior a hoy";
       }
@@ -94,8 +122,33 @@ export class EventosService {
       error["hora_fin"] = this.errorService.required;
     }
     if (data["hora_inicio"] && data["hora_fin"]) {
-      if (data["hora_inicio"] >= data["hora_fin"]) {
+      // Convertir a formato 24h para comparar correctamente
+      const horaInicio24 = this.convertirA24HorasParaComparar(data["hora_inicio"]);
+      const horaFin24 = this.convertirA24HorasParaComparar(data["hora_fin"]);
+      
+      if (horaInicio24 >= horaFin24) {
         error["hora_fin"] = "La hora de fin debe ser posterior a la hora de inicio";
+      }
+    }
+
+    // Validación adicional: si es el día actual, la hora de inicio no puede ser anterior a la hora actual
+    if (!editar && data["fecha_realizacion"] && data["hora_inicio"]) {
+      const fechaEvento = new Date(data["fecha_realizacion"]);
+      const hoy = new Date();
+      
+      // Verificar si es el mismo día
+      if (fechaEvento.getFullYear() === hoy.getFullYear() &&
+          fechaEvento.getMonth() === hoy.getMonth() &&
+          fechaEvento.getDate() === hoy.getDate()) {
+        
+        const horaInicio24 = this.convertirA24HorasParaComparar(data["hora_inicio"]);
+        const [horasInicio, minutosInicio] = horaInicio24.split(':').map(Number);
+        const horaActual = hoy.getHours();
+        const minutosActuales = hoy.getMinutes();
+        
+        if (horasInicio < horaActual || (horasInicio === horaActual && minutosInicio < minutosActuales)) {
+          error["hora_inicio"] = "La hora de inicio no puede ser anterior a la hora actual para eventos del día de hoy";
+        }
       }
     }
 

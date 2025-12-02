@@ -6,9 +6,6 @@ import { FacadeService } from 'src/app/services/facade.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { EditarEventoModalComponent } from 'src/app/modals/editar-evento-modal/editar-evento-modal.component';
 
-// Importaciones para el DatePicker
-declare var M: any;
-
 @Component({
   selector: 'app-registro-eventos',
   templateUrl: './registro-eventos.component.html',
@@ -107,12 +104,12 @@ export class RegistroEventosComponent implements OnInit {
           );
         }
 
-        // Formatear horas a HH:MM para los inputs de tipo time
+        // Convertir horas de formato 24h a formato 12h AM/PM para el timepicker
         if (this.evento.hora_inicio) {
-          this.evento.hora_inicio = this.evento.hora_inicio.slice(0, 5);
+          this.evento.hora_inicio = this.convertirA12Horas(this.evento.hora_inicio);
         }
         if (this.evento.hora_fin) {
-          this.evento.hora_fin = this.evento.hora_fin.slice(0, 5);
+          this.evento.hora_fin = this.convertirA12Horas(this.evento.hora_fin);
         }
 
         // Parsear público objetivo
@@ -181,8 +178,51 @@ export class RegistroEventosComponent implements OnInit {
     if (hora instanceof Date) {
       return hora.toTimeString().slice(0, 5);
     }
+    // Si viene en formato 12h (hh:mm AM/PM), convertir a 24h
+    if (typeof hora === 'string' && (hora.includes('AM') || hora.includes('PM'))) {
+      return this.convertirA24Horas(hora);
+    }
     // Si ya es string en formato HH:MM o HH:MM:SS
     return hora.slice(0, 5);
+  }
+
+  // Convertir hora de formato 24h (HH:MM) a 12h (hh:mm AM/PM)
+  private convertirA12Horas(hora24: string): string {
+    if (!hora24) return '';
+    const [horasStr, minutosStr] = hora24.split(':');
+    let horas = parseInt(horasStr, 10);
+    const minutos = minutosStr || '00';
+    const periodo = horas >= 12 ? 'PM' : 'AM';
+    
+    if (horas === 0) {
+      horas = 12;
+    } else if (horas > 12) {
+      horas = horas - 12;
+    }
+    
+    return `${horas.toString().padStart(2, '0')}:${minutos.slice(0, 2)} ${periodo}`;
+  }
+
+  // Convertir hora de formato 12h (hh:mm AM/PM) a 24h (HH:MM)
+  private convertirA24Horas(hora12: string): string {
+    if (!hora12) return '';
+    
+    // Separar hora y periodo (AM/PM)
+    const partes = hora12.trim().split(' ');
+    if (partes.length !== 2) return hora12.slice(0, 5);
+    
+    const [tiempo, periodo] = partes;
+    const [horasStr, minutosStr] = tiempo.split(':');
+    let horas = parseInt(horasStr, 10);
+    const minutos = minutosStr || '00';
+    
+    if (periodo.toUpperCase() === 'PM' && horas !== 12) {
+      horas += 12;
+    } else if (periodo.toUpperCase() === 'AM' && horas === 12) {
+      horas = 0;
+    }
+    
+    return `${horas.toString().padStart(2, '0')}:${minutos.slice(0, 2)}`;
   }
 
   public registrar(): void {

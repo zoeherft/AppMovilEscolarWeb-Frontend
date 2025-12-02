@@ -30,7 +30,7 @@
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Fecha de realización</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="evento.fecha_realizacion" [min]="minDate"
-          placeholder="Selecciona la fecha">
+          placeholder="Selecciona la fecha" (click)="picker.open()" readonly>
         <mat-hint>Formato: dd/MM/aaaa</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -40,14 +40,20 @@
       <!-- Hora de inicio -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Hora de inicio</mat-label>
-        <input matInput type="time" [(ngModel)]="evento.hora_inicio" placeholder="Selecciona la hora de inicio">
+        <input matInput [ngxTimepicker]="pickerInicio" [(ngModel)]="evento.hora_inicio" 
+          placeholder="Selecciona la hora de inicio" readonly [format]="12">
+        <mat-icon matSuffix class="timepicker-icon" (click)="pickerInicio.open()">access_time</mat-icon>
+        <ngx-material-timepicker #pickerInicio [enableKeyboardInput]="true"></ngx-material-timepicker>
       </mat-form-field>
       <div *ngIf="errors.hora_inicio" class="invalid-feedback">{{ errors.hora_inicio }}</div>
 
       <!-- Hora de fin -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Hora de fin</mat-label>
-        <input matInput type="time" [(ngModel)]="evento.hora_fin" placeholder="Selecciona la hora de fin">
+        <input matInput [ngxTimepicker]="pickerFin" [(ngModel)]="evento.hora_fin" 
+          placeholder="Selecciona la hora de fin" readonly [format]="12">
+        <mat-icon matSuffix class="timepicker-icon" (click)="pickerFin.open()">access_time</mat-icon>
+        <ngx-material-timepicker #pickerFin [enableKeyboardInput]="true"></ngx-material-timepicker>
       </mat-form-field>
       <div *ngIf="errors.hora_fin" class="invalid-feedback">{{ errors.hora_fin }}</div>
 

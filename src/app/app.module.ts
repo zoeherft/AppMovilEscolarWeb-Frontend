@@ -30,6 +30,9 @@ import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
 
+// Angular Material Components - Timepicker
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+
 // Paginación
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 //Para el paginator en español
@@ -101,7 +104,8 @@ import { EditarEventoModalComponent } from './modals/editar-evento-modal/editar-
     MatSortModule,
     MatSidenavModule,
     MatDialogModule,
-    NgChartsModule
+    NgChartsModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     CookieService,
