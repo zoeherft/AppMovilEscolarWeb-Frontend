@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
 import { MaestrosService } from 'src/app/services/maestros.service';
 import { EliminarUserModalComponent } from '../../modals/eliminar-user-modal/eliminar-user-modal.component';
+import { EditarUserModalComponent } from '../../modals/editar-user-modal/editar-user-modal.component';
 
 @Component({
   selector: 'app-maestros-screen',
@@ -91,7 +92,17 @@ export class MaestrosScreenComponent implements OnInit {
   }
 
   public goEditar(idUser: number) {
-    this.router.navigate(["registro-usuarios/maestros/" + idUser]);
+    const dialogRef = this.dialog.open(EditarUserModalComponent, {
+      data: { id: idUser, rol: 'maestro' },
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.isEdit) {
+        this.router.navigate(["registro-usuarios/maestros/" + idUser]);
+      }
+    });
   }
 
   public delete(idUser: number) {

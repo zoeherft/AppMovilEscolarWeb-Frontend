@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdministradoresService } from 'src/app/services/administradores.service';
 import { FacadeService } from 'src/app/services/facade.service';
 import { EliminarUserModalComponent } from '../../modals/eliminar-user-modal/eliminar-user-modal.component';
+import { EditarUserModalComponent } from '../../modals/editar-user-modal/editar-user-modal.component';
 
 @Component({
   selector: 'app-admin-screen',
@@ -89,7 +90,17 @@ export class AdminScreenComponent implements OnInit {
   }
 
   public goEditar(idUser: number) {
-    this.router.navigate(["registro-usuarios/administrador/"+idUser]);
+    const dialogRef = this.dialog.open(EditarUserModalComponent, {
+      data: { id: idUser, rol: 'administrador' },
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.isEdit) {
+        this.router.navigate(["registro-usuarios/administrador/" + idUser]);
+      }
+    });
   }
 
   public delete(idUser: number) {

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { EliminarEventoModalComponent } from '../../modals/eliminar-evento-modal/eliminar-evento-modal.component';
+import { EditarEventoModalComponent } from '../../modals/editar-evento-modal/editar-evento-modal.component';
 
 @Component({
   selector: 'app-eventos-screen',
@@ -147,7 +148,18 @@ export class EventosScreenComponent implements OnInit {
       alert("No tienes permisos para editar eventos");
       return;
     }
-    this.router.navigate(["registro-eventos/" + idEvento]);
+
+    const dialogRef = this.dialog.open(EditarEventoModalComponent, {
+      data: { id: idEvento },
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.isConfirm) {
+        this.router.navigate(["registro-eventos/" + idEvento]);
+      }
+    });
   }
 
   // Eliminar evento

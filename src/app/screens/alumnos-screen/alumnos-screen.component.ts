@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
 import { AlumnosService } from 'src/app/services/alumnos.service';
 import { EliminarUserModalComponent } from '../../modals/eliminar-user-modal/eliminar-user-modal.component';
+import { EditarUserModalComponent } from '../../modals/editar-user-modal/editar-user-modal.component';
 
 @Component({
   selector: 'app-alumnos-screen',
@@ -90,7 +91,17 @@ export class AlumnosScreenComponent implements OnInit {
   }
 
   public goEditar(idUser: number) {
-    this.router.navigate(["registro-usuarios/alumno/" + idUser]);
+    const dialogRef = this.dialog.open(EditarUserModalComponent, {
+      data: { id: idUser, rol: 'alumno' },
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.isEdit) {
+        this.router.navigate(["registro-usuarios/alumno/" + idUser]);
+      }
+    });
   }
 
   public delete(idUser: number) {

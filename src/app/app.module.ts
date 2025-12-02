@@ -57,6 +57,7 @@ import { EventosScreenComponent } from './screens/eventos-screen/eventos-screen.
 import { RegistroEventosScreenComponent } from './screens/registro-eventos-screen/registro-eventos-screen.component';
 import { EliminarEventoModalComponent } from './modals/eliminar-evento-modal/eliminar-evento-modal.component';
 import { EditarEventoModalComponent } from './modals/editar-evento-modal/editar-evento-modal.component';
+import { EditarUserModalComponent } from './modals/editar-user-modal/editar-user-modal.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { EditarEventoModalComponent } from './modals/editar-evento-modal/editar-
     EventosScreenComponent,
     RegistroEventosScreenComponent,
     EliminarEventoModalComponent,
-    EditarEventoModalComponent
+    EditarEventoModalComponent,
+    EditarUserModalComponent
   ],
   imports: [
     BrowserModule,
