@@ -27,7 +27,7 @@
       <div *ngIf="errors.tipo_evento" class="invalid-feedback">{{ errors.tipo_evento }}</div>
 
       <!-- Fecha de realización -->
-      <mat-form-field class="mat-input" appearance="outline">
+      <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
         <mat-label>Fecha de realización</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="evento.fecha_realizacion" [min]="minDate"
           placeholder="Selecciona la fecha" (click)="picker.open()" readonly>
