@@ -14,22 +14,6 @@ export class GraficasScreenComponent implements OnInit{
   public total_user: any = {};
   public estadisticas_eventos: any = {};
 
-  //Histograma
-  lineChartData = {
-    labels: [] as string[],
-    datasets: [
-      {
-        data: [] as number[],
-        label: 'Eventos por nombre',
-        backgroundColor: '#F88406'
-      }
-    ]
-  }
-  lineChartOption = {
-    responsive:false
-  }
-  lineChartPlugins = [ DatalabelsPlugin ];
-
   //Barras
   barChartData = {
     labels: [] as string[],
@@ -47,8 +31,17 @@ export class GraficasScreenComponent implements OnInit{
       }
     ]
   }
-  barChartOption = {
-    responsive:false
+  barChartOption: any = {
+    responsive: false,
+    scales: {
+      y: {
+        ticks: {
+          stepSize: 1,
+          precision: 0
+        },
+        beginAtZero: true
+      }
+    }
   }
   barChartPlugins = [ DatalabelsPlugin ];
 
@@ -71,26 +64,6 @@ export class GraficasScreenComponent implements OnInit{
     responsive:false
   }
   pieChartPlugins = [ DatalabelsPlugin ];
-
-  //Doughnut
-  doughnutChartData = {
-    labels: ["Administradores", "Maestros", "Alumnos"],
-    datasets: [
-      {
-        data:[0, 0, 0],
-        label: 'Registro de usuarios',
-        backgroundColor: [
-          '#F88406',
-          '#FCFF44',
-          '#31E7E7'
-        ]
-      }
-    ]
-  }
-  doughnutChartOption = {
-    responsive:false
-  }
-  doughnutChartPlugins = [ DatalabelsPlugin ];
 
   constructor(
     private administradoresServices: AdministradoresService,
@@ -141,16 +114,6 @@ export class GraficasScreenComponent implements OnInit{
         }
       ]
     };
-
-    this.doughnutChartData = {
-      ...this.doughnutChartData,
-      datasets: [
-        {
-          ...this.doughnutChartData.datasets[0],
-          data: [admins, maestros, alumnos]
-        }
-      ]
-    };
   }
 
   private actualizarGraficasEventos(): void {
@@ -182,33 +145,6 @@ export class GraficasScreenComponent implements OnInit{
             data: [0],
             label: 'Eventos por Tipo',
             backgroundColor: ['#CCCCCC']
-          }
-        ]
-      };
-    }
-
-    if (this.estadisticas_eventos.por_nombre && this.estadisticas_eventos.por_nombre.length > 0) {
-      const labelsNombre = this.estadisticas_eventos.por_nombre.map((item: any) => item.nombre_evento);
-      const datosNombre = this.estadisticas_eventos.por_nombre.map((item: any) => item.cantidad);
-
-      this.lineChartData = {
-        labels: labelsNombre,
-        datasets: [
-          {
-            data: datosNombre,
-            label: 'Eventos por nombre',
-            backgroundColor: '#F88406'
-          }
-        ]
-      };
-    } else {
-      this.lineChartData = {
-        labels: ['Sin eventos registrados'],
-        datasets: [
-          {
-            data: [0],
-            label: 'Eventos por nombre',
-            backgroundColor: '#CCCCCC'
           }
         ]
       };
