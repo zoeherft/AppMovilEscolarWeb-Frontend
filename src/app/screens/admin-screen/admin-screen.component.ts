@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { AdministradoresService } from 'src/app/services/administradores.service';
 import { FacadeService } from 'src/app/services/facade.service';
 import { EliminarUserModalComponent } from '../../modals/eliminar-user-modal/eliminar-user-modal.component';
@@ -16,6 +19,13 @@ export class AdminScreenComponent implements OnInit {
   public rol: string = "";
   public token: string = "";
   public lista_admins: any[] = [];
+
+  //Para la tabla
+  displayedColumns: string[] = ['id', 'clave_admin', 'nombre', 'email', 'telefono', 'rfc', 'edad', 'ocupacion', 'editar', 'eliminar'];
+  dataSource = new MatTableDataSource<DatosAdmin>(this.lista_admins as DatosAdmin[]);
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public facadeService: FacadeService,
@@ -39,16 +49,38 @@ export class AdminScreenComponent implements OnInit {
     this.obtenerAdmins();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   //Obtener lista de usuarios
   public obtenerAdmins() {
     this.administradoresService.obtenerListaAdmins().subscribe(
       (response) => {
         this.lista_admins = response;
         console.log("Lista users: ", this.lista_admins);
+        if (this.lista_admins.length > 0) {
+          this.lista_admins.forEach(admin => {
+            admin.first_name = admin.user.first_name;
+            admin.last_name = admin.user.last_name;
+            admin.email = admin.user.email;
+          });
+
+          this.dataSource = new MatTableDataSource<DatosAdmin>(this.lista_admins as DatosAdmin[]);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       }, (error) => {
         alert("No se pudo obtener la lista de administradores");
       }
     );
+  }
+
+  //Filtrar datos de la tabla
+  public filtrar(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   public goEditar(idUser: number) {
@@ -82,4 +114,17 @@ export class AdminScreenComponent implements OnInit {
     }
   }
 
+}
+
+//Interfaz para los datos de admin
+export interface DatosAdmin {
+  id: number;
+  clave_admin: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telefono: string;
+  rfc: string;
+  edad: number;
+  ocupacion: string;
 }
