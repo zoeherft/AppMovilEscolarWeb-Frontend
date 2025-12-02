@@ -186,7 +186,7 @@ app-movil-escolar-frontend/
 | Editar evento | ✅ | ❌ | ❌ |
 | Eliminar evento | ✅ | ❌ | ❌ |
 | Gestionar usuarios | ✅ | ❌ | ❌ |
-| Ver gráficas | ✅ | ✅ | ❌ |
+| Ver gráficas | ✅ | ❌ | ❌ |
 
 ---
 
@@ -199,9 +199,9 @@ app-movil-escolar-frontend/
 | `/eventos-academicos` | Lista de eventos | Autenticado |
 | `/registro-eventos` | Crear/Editar evento | Solo Admin |
 | `/administradores` | Gestión de admins | Solo Admin |
-| `/maestros` | Gestión de maestros | Admin/Maestro |
-| `/alumnos` | Gestión de alumnos | Admin/Maestro |
-| `/graficas` | Estadísticas | Admin/Maestro |
+| `/maestros` | Gestión de maestros | Admin/Maestro (solo lectura para Maestro) |
+| `/alumnos` | Gestión de alumnos | Admin/Maestro (solo lectura para Maestro) |
+| `/graficas` | Estadísticas | Solo Admin |
 
 ---
 

@@ -19,6 +19,9 @@ export class RegistroUsuariosScreenComponent implements OnInit {
   public editar:boolean = false;
   public rol:string = "";
   public idUser:number = 0;
+  public token:string = "";
+  public currentUserRole:string = "";
+  public currentUserId:string = "";
 
   //Banderas para el tipo de usuario
   public isAdmin:boolean = false;
@@ -39,6 +42,10 @@ export class RegistroUsuariosScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.user.tipo_usuario = '';
+    this.token = this.facadeService.getSessionToken();
+    this.currentUserRole = this.facadeService.getUserGroup();
+    this.currentUserId = this.facadeService.getUserId();
+
     //Obtener de la URL el rol para saber cual editar
     if(this.activatedRoute.snapshot.params['rol'] != undefined){
       this.rol = this.activatedRoute.snapshot.params['rol'];
@@ -51,8 +58,28 @@ export class RegistroUsuariosScreenComponent implements OnInit {
       //Asignamos a nuestra variable global el valor del ID que viene por la URL
       this.idUser = this.activatedRoute.snapshot.params['id'];
       console.log("ID User: ", this.idUser);
+
+      // Validar permisos de edición:
+      // - Admin puede editar cualquier usuario
+      // - Otros usuarios solo pueden editar su propio perfil
+      if (this.currentUserRole !== 'administrador') {
+        if (String(this.currentUserId) !== String(this.idUser)) {
+          alert("No tienes permisos para editar este usuario");
+          this.router.navigate(["/home"]);
+          return;
+        }
+      }
+
       //Al iniciar la vista obtiene el usuario por su ID
       this.obtenerUserByID();
+    } else {
+      // Si no hay ID, es un registro nuevo
+      // Solo admin puede registrar nuevos usuarios
+      if (this.token !== "" && this.currentUserRole !== 'administrador') {
+        alert("Solo los administradores pueden registrar nuevos usuarios");
+        this.router.navigate(["/home"]);
+        return;
+      }
     }
   }
 

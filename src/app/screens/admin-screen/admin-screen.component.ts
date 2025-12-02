@@ -52,6 +52,14 @@ export class AdminScreenComponent implements OnInit {
     this.token = this.facadeService.getSessionToken();
     if(this.token == ""){
       this.router.navigate(["/"]);
+      return;
+    }
+
+    // Solo administradores pueden acceder a esta vista
+    if(this.rol !== 'administrador'){
+      alert("No tienes permisos para acceder a esta sección");
+      this.router.navigate(["/home"]);
+      return;
     }
 
     // Obtenemos los administradores

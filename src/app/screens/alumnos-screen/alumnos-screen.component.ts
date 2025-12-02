@@ -53,8 +53,29 @@ export class AlumnosScreenComponent implements OnInit {
     if(this.token == ""){
       this.router.navigate(["/"]);
     }
+
+    // Ajustar columnas según el rol - solo admin puede editar/eliminar
+    if (!this.isAdmin()) {
+      this.displayedColumns = this.displayedColumns.filter(col => col !== 'eliminar' && col !== 'editar');
+    }
+
     //Obtener alumnos
     this.obtenerAlumnos();
+  }
+
+  // Verificar si es administrador
+  public isAdmin(): boolean {
+    return this.rol === 'administrador';
+  }
+
+  // Puede editar: solo administradores
+  public canEdit(): boolean {
+    return this.isAdmin();
+  }
+
+  // Puede eliminar: solo administradores
+  public canDelete(): boolean {
+    return this.isAdmin();
   }
 
   ngAfterViewInit() {
@@ -91,6 +112,11 @@ export class AlumnosScreenComponent implements OnInit {
   }
 
   public goEditar(idUser: number) {
+    if (!this.canEdit()) {
+      alert("No tienes permisos para editar alumnos");
+      return;
+    }
+
     const dialogRef = this.dialog.open(EditarUserModalComponent, {
       data: { id: idUser, rol: 'alumno' },
       height: '288px',
@@ -105,30 +131,27 @@ export class AlumnosScreenComponent implements OnInit {
   }
 
   public delete(idUser: number) {
-    // Se obtiene el ID del usuario en sesión
-    const userIdSession = Number(this.facadeService.getUserId());
-    // Administrador puede eliminar cualquier alumno
-    // Alumno solo puede eliminar su propio registro
-    if (this.rol === 'administrador' || (this.rol === 'alumno' && userIdSession === idUser)) {
-      const dialogRef = this.dialog.open(EliminarUserModalComponent,{
-        data: {id: idUser, rol: 'alumno'},
-        height: '288px',
-        width: '328px',
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if(result.isDelete){
-          console.log("Alumno eliminado");
-          alert("Alumno eliminado correctamente.");
-          window.location.reload();
-        }else{
-          alert("Alumno no se ha podido eliminar.");
-          console.log("No se eliminó el alumno");
-        }
-      });
-    }else{
-      alert("No tienes permisos para eliminar este alumno.");
+    if (!this.canDelete()) {
+      alert("No tienes permisos para eliminar alumnos");
+      return;
     }
+
+    const dialogRef = this.dialog.open(EliminarUserModalComponent,{
+      data: {id: idUser, rol: 'alumno'},
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isDelete){
+        console.log("Alumno eliminado");
+        alert("Alumno eliminado correctamente.");
+        window.location.reload();
+      }else{
+        alert("Alumno no se ha podido eliminar.");
+        console.log("No se eliminó el alumno");
+      }
+    });
   }
 
 }

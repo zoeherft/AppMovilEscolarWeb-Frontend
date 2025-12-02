@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 import { AdministradoresService } from 'src/app/services/administradores.service';
 import { EventosService } from 'src/app/services/eventos.service';
+import { FacadeService } from 'src/app/services/facade.service';
 
 @Component({
   selector: 'app-graficas-screen',
@@ -13,6 +15,8 @@ export class GraficasScreenComponent implements OnInit{
   //Variables
   public total_user: any = {};
   public estadisticas_eventos: any = {};
+  public rol: string = "";
+  public token: string = "";
 
   //Barras
   barChartData = {
@@ -67,10 +71,28 @@ export class GraficasScreenComponent implements OnInit{
 
   constructor(
     private administradoresServices: AdministradoresService,
-    private eventosService: EventosService
+    private eventosService: EventosService,
+    private facadeService: FacadeService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.rol = this.facadeService.getUserGroup();
+    this.token = this.facadeService.getSessionToken();
+
+    // Validar que haya inicio de sesión
+    if(this.token == ""){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    // Solo administradores pueden acceder a esta vista
+    if(this.rol !== 'administrador'){
+      alert("No tienes permisos para acceder a las gráficas");
+      this.router.navigate(["/home"]);
+      return;
+    }
+
     this.obtenerTotalUsers();
     this.obtenerEstadisticasEventos();
   }

@@ -53,8 +53,29 @@ export class MaestrosScreenComponent implements OnInit {
     if(this.token == ""){
       this.router.navigate(["/"]);
     }
+
+    // Ajustar columnas según el rol - solo admin puede editar/eliminar
+    if (!this.isAdmin()) {
+      this.displayedColumns = this.displayedColumns.filter(col => col !== 'eliminar' && col !== 'editar');
+    }
+
     //Obtener maestros
     this.obtenerMaestros();
+  }
+
+  // Verificar si es administrador
+  public isAdmin(): boolean {
+    return this.rol === 'administrador';
+  }
+
+  // Puede editar: solo administradores
+  public canEdit(): boolean {
+    return this.isAdmin();
+  }
+
+  // Puede eliminar: solo administradores
+  public canDelete(): boolean {
+    return this.isAdmin();
   }
 
   ngAfterViewInit() {
@@ -92,6 +113,11 @@ export class MaestrosScreenComponent implements OnInit {
   }
 
   public goEditar(idUser: number) {
+    if (!this.canEdit()) {
+      alert("No tienes permisos para editar maestros");
+      return;
+    }
+
     const dialogRef = this.dialog.open(EditarUserModalComponent, {
       data: { id: idUser, rol: 'maestro' },
       height: '288px',
@@ -106,18 +132,16 @@ export class MaestrosScreenComponent implements OnInit {
   }
 
   public delete(idUser: number) {
-    // Se obtiene el ID del usuario en sesión, es decir, quien intenta eliminar
-    const userIdSession = Number(this.facadeService.getUserId());
-    // --------- Pero el parametro idUser (el de la función) es el ID del maestro que se quiere eliminar ---------
-    // Administrador puede eliminar cualquier maestro
-    // Maestro solo puede eliminar su propio registro
-    if (this.rol === 'administrador' || (this.rol === 'maestro' && userIdSession === idUser)) {
-      //Si es administrador o es maestro, es decir, cumple la condición, se puede eliminar
-      const dialogRef = this.dialog.open(EliminarUserModalComponent,{
-        data: {id: idUser, rol: 'maestro'}, //Se pasan valores a través del componente
-        height: '288px',
-        width: '328px',
-      });
+    if (!this.canDelete()) {
+      alert("No tienes permisos para eliminar maestros");
+      return;
+    }
+
+    const dialogRef = this.dialog.open(EliminarUserModalComponent,{
+      data: {id: idUser, rol: 'maestro'},
+      height: '288px',
+      width: '328px',
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result.isDelete){
@@ -130,9 +154,6 @@ export class MaestrosScreenComponent implements OnInit {
         console.log("No se eliminó el maestro");
       }
     });
-    }else{
-      alert("No tienes permisos para eliminar este maestro.");
-    }
   }
 
 }
