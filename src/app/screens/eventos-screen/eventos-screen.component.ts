@@ -24,8 +24,16 @@ export class EventosScreenComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nombre_evento', 'tipo_evento', 'fecha_realizacion', 'horario', 'lugar', 'publico_objetivo', 'responsable', 'cupo_maximo', 'editar', 'eliminar'];
   dataSource = new MatTableDataSource<DatosEvento>(this.lista_eventos as DatosEvento[]);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
+    if (paginator) {
+      this.dataSource.paginator = paginator;
+    }
+  }
+  @ViewChild(MatSort) set sort(sort: MatSort) {
+    if (sort) {
+      this.dataSource.sort = sort;
+    }
+  }
 
   constructor(
     public facadeService: FacadeService,
@@ -56,8 +64,7 @@ export class EventosScreenComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // El paginator y sort se asignan automáticamente via los setters de @ViewChild
   }
 
   // Verificar roles
@@ -117,9 +124,8 @@ export class EventosScreenComponent implements OnInit {
             }
           });
 
-          this.dataSource = new MatTableDataSource<DatosEvento>(this.lista_eventos as DatosEvento[]);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          // Solo actualizar los datos, no recrear el dataSource
+          this.dataSource.data = this.lista_eventos as DatosEvento[];
         }
       },
       (error) => {

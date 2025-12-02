@@ -24,8 +24,16 @@ export class AdminScreenComponent implements OnInit {
   displayedColumns: string[] = ['id', 'clave_admin', 'nombre', 'email', 'telefono', 'rfc', 'edad', 'ocupacion', 'editar', 'eliminar'];
   dataSource = new MatTableDataSource<DatosAdmin>(this.lista_admins as DatosAdmin[]);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
+    if (paginator) {
+      this.dataSource.paginator = paginator;
+    }
+  }
+  @ViewChild(MatSort) set sort(sort: MatSort) {
+    if (sort) {
+      this.dataSource.sort = sort;
+    }
+  }
 
   constructor(
     public facadeService: FacadeService,
@@ -50,8 +58,7 @@ export class AdminScreenComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // El paginator y sort se asignan automáticamente via los setters de @ViewChild
   }
 
   //Obtener lista de usuarios

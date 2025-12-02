@@ -24,8 +24,16 @@ export class AlumnosScreenComponent implements OnInit {
   displayedColumns: string[] = ['id', 'matricula', 'nombre', 'email', 'curp', 'fecha_nacimiento', 'telefono', 'rfc', 'ocupacion', 'editar', 'eliminar'];
   dataSource = new MatTableDataSource<DatosAlumno>(this.lista_alumnos as DatosAlumno[]);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
+    if (paginator) {
+      this.dataSource.paginator = paginator;
+    }
+  }
+  @ViewChild(MatSort) set sort(sort: MatSort) {
+    if (sort) {
+      this.dataSource.sort = sort;
+    }
+  }
 
   constructor(
     public facadeService: FacadeService,
@@ -49,8 +57,7 @@ export class AlumnosScreenComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // El paginator y sort se asignan automáticamente via los setters de @ViewChild
   }
 
   //Obtener alumnos
