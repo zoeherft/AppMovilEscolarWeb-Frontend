@@ -1,84 +1,103 @@
-# 🎓 Sistema de Gestión de Eventos Académicos - Frontend
+# Plataforma Web de Eventos Escolares 🎓
 
-Aplicación web desarrollada con **Angular 16** y **Angular Material** para la gestión de eventos académicos universitarios.
-
-## 🌐 Despliegue
-
-- **Producción**: [https://app-eventos-frontend.vercel.app](https://app-eventos-frontend.vercel.app)
-- **Backend API**: [https://app-eventos-backend.onrender.com](https://app-eventos-backend.onrender.com)
+Interfaz de usuario construida con **Angular 16** y **Angular Material** para administrar eventos académicos en instituciones educativas.
 
 ---
 
-## 📋 Tabla de Contenidos
+## Producción
 
-- [Características](#-características)
-- [Tecnologías](#-tecnologías)
-- [Requisitos Previos](#-requisitos-previos)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
-- [Ejecución](#-ejecución)
-- [Despliegue en Vercel](#-despliegue-en-vercel)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
+🌐 **Aplicación**: https://app-eventos-frontend.vercel.app
+
+🔗 **Servidor API**: https://app-eventos-backend.onrender.com
 
 ---
 
-## ✨ Características
+## Contenido
 
-- ✅ **CRUD de Eventos Académicos** con validaciones completas
-- ✅ **Control de acceso por roles** (Admin, Maestro, Alumno)
-- ✅ **Autenticación** con tokens (cookies seguras)
-- ✅ **Tablas dinámicas** con paginación, ordenamiento y filtrado
-- ✅ **Formularios** con validación en tiempo real
-- ✅ **Gráficas estadísticas** con datos del API
-- ✅ **Diseño responsivo** con Angular Material y Bootstrap
-- ✅ **DatePicker** con restricción de fechas
-- ✅ **Validación de inputs** (solo letras, alfanuméricos, números)
-
----
-
-## 🛠 Tecnologías
-
-| Tecnología | Versión | Descripción |
-|------------|---------|-------------|
-| Angular | 16.2.0 | Framework principal |
-| Angular Material | 16.2.14 | Componentes UI |
-| Bootstrap | 5.3.8 | Estilos CSS |
-| ng2-charts | 4.1.1 | Gráficas |
-| ngx-cookie-service | 16.1.0 | Manejo de cookies |
-| ngx-mask | 16.4.2 | Máscaras de input |
+- [Descripción General](#descripción-general)
+- [Herramientas Utilizadas](#herramientas-utilizadas)
+- [Requisitos del Sistema](#requisitos-del-sistema)
+- [Puesta en Marcha](#puesta-en-marcha)
+- [Archivos de Entorno](#archivos-de-entorno)
+- [Comandos de Ejecución](#comandos-de-ejecución)
+- [Deploy en Vercel](#deploy-en-vercel)
+- [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+- [Permisos según Rol](#permisos-según-rol)
+- [Rutas de la Aplicación](#rutas-de-la-aplicación)
+- [Problemas Frecuentes](#problemas-frecuentes)
+- [Desarrollo Local](#desarrollo-local)
 
 ---
 
-## 📦 Requisitos Previos
+## Descripción General
 
-1. **Node.js 18.x+**
-   ```bash
-   node --version
-   ```
+Esta aplicación web permite:
 
-2. **npm 9.x+**
-   ```bash
-   npm --version
-   ```
+✔️ Gestión integral de eventos académicos con validaciones completas
 
-3. **Angular CLI 16.x**
-   ```bash
-   npm install -g @angular/cli@16
-   ng version
-   ```
+✔️ Sistema de roles (Administrador, Docente, Estudiante)
+
+✔️ Autenticación mediante cookies seguras
+
+✔️ Tablas interactivas con ordenamiento, filtrado y paginación
+
+✔️ Formularios con validación instantánea
+
+✔️ Visualización de estadísticas mediante gráficos
+
+✔️ Interfaz adaptable a cualquier dispositivo
+
+✔️ Selector de fechas con restricciones configurables
+
+✔️ Máscaras de entrada para datos específicos
 
 ---
 
-## 🚀 Instalación
+## Herramientas Utilizadas
 
-### Paso 1: Clonar y navegar
+| Librería | Versión | Función |
+|----------|---------|---------|
+| Angular | 16.2.0 | Framework SPA |
+| Angular Material | 16.2.14 | Biblioteca de componentes |
+| Bootstrap | 5.3.8 | Framework CSS |
+| ng2-charts | 4.1.1 | Componentes de gráficas |
+| ngx-cookie-service | 16.1.0 | Gestión de cookies |
+| ngx-mask | 16.4.2 | Formateo de inputs |
 
+---
+
+## Requisitos del Sistema
+
+Verifica tener instalado:
+
+**Node.js versión 18 o superior**
 ```bash
-git clone https://github.com/ivanblueberry/app-eventos-frontend.git
-cd app-movil-escolar-frontend
+node --version
 ```
 
-### Paso 2: Instalar dependencias
+**npm versión 9 o superior**
+```bash
+npm --version
+```
+
+**Angular CLI versión 16**
+```bash
+npm install -g @angular/cli@16
+ng version
+```
+
+---
+
+## Puesta en Marcha
+
+### Clonar repositorio
+
+```bash
+git clone https://github.com/zoeherft/AppMovilEscolarWeb-Frontend.git
+cd AppMovilEscolarWeb-Frontend
+```
+
+### Descargar dependencias
 
 ```bash
 npm install
@@ -86,11 +105,11 @@ npm install
 
 ---
 
-## ⚙️ Configuración
+## Archivos de Entorno
 
-### Entornos
+El proyecto maneja dos configuraciones:
 
-**Desarrollo** (`src/environments/environment.ts`):
+**Desarrollo** - `src/environments/environment.ts`
 ```typescript
 export const environment = {
   production: false,
@@ -98,7 +117,7 @@ export const environment = {
 };
 ```
 
-**Producción** (`src/environments/environment.prod.ts`):
+**Producción** - `src/environments/environment.prod.ts`
 ```typescript
 export const environment = {
   production: true,
@@ -108,151 +127,156 @@ export const environment = {
 
 ---
 
-## ▶️ Ejecución
+## Comandos de Ejecución
 
-### Desarrollo
+**Servidor de desarrollo**
 ```bash
 ng serve
-# Disponible en: http://localhost:4200/
 ```
+Navega a http://localhost:4200/
 
-### Con apertura automática
+**Abrir navegador automáticamente**
 ```bash
 ng serve --open
 ```
 
-### Puerto personalizado
+**Usar puerto alternativo**
 ```bash
 ng serve --port 4300
 ```
 
 ---
 
-## 🚀 Despliegue en Vercel
+## Deploy en Vercel
 
-### Configuración automática
+### Proceso automatizado
 
-1. **Conectar repositorio** en [vercel.com](https://vercel.com)
+1. Vincula el repositorio desde [vercel.com](https://vercel.com)
 
-2. **El archivo `vercel.json`** ya está configurado:
-   ```json
-   {
-     "buildCommand": "npm run vercel-build",
-     "outputDirectory": "dist/app-movil-escolar-frontend",
-     "routes": [...]
-   }
-   ```
+2. La configuración ya existe en `vercel.json`:
+```json
+{
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist/app-movil-escolar-frontend",
+  "routes": [...]
+}
+```
 
-3. **Push a main** para desplegar automáticamente
+3. Los commits a main disparan el deploy automático
 
-### Variables de Vercel (opcionales)
-No se requieren variables de entorno adicionales.
+### Configuración adicional
+El proyecto no requiere variables de entorno en Vercel.
 
 ---
 
-## 📁 Estructura del Proyecto
+## Arquitectura del Proyecto
 
 ```
-app-movil-escolar-frontend/
+AppMovilEscolarWeb-Frontend/
 ├── src/
 │   ├── app/
-│   │   ├── layouts/           # Layouts (auth, dashboard)
-│   │   ├── screens/           # Páginas principales
-│   │   ├── partials/          # Componentes reutilizables
-│   │   ├── modals/            # Modales de confirmación
-│   │   ├── services/          # Servicios HTTP y utilidades
-│   │   ├── shared/            # Componentes compartidos
-│   │   ├── app.module.ts
+│   │   ├── layouts/           # Plantillas base
+│   │   ├── screens/           # Vistas principales
+│   │   ├── partials/          # Componentes parciales
+│   │   ├── modals/            # Ventanas emergentes
+│   │   ├── services/          # Comunicación con API
+│   │   ├── shared/            # Elementos compartidos
+│   │   ├── app.module.ts      # Módulo raíz
 │   │   └── app-routing.module.ts
 │   │
-│   ├── environments/          # Configuración por entorno
-│   ├── assets/                # Imágenes y fuentes
-│   └── styles.scss            # Estilos globales
+│   ├── environments/          # Variables por entorno
+│   ├── assets/                # Recursos estáticos
+│   └── styles.scss            # Estilos generales
 │
-├── angular.json               # Configuración de Angular
-├── vercel.json                # Configuración de Vercel
-├── package.json
-└── README.md
+├── angular.json               # Config de Angular
+├── vercel.json                # Config de Vercel
+└── package.json               # Dependencias npm
 ```
 
 ---
 
-## 🎯 Funcionalidades por Rol
+## Permisos según Rol
 
-| Funcionalidad | Admin | Maestro | Alumno |
-|---------------|-------|---------|--------|
-| Ver eventos | ✅ Todos | ✅ Todos | ✅ Su programa |
-| Crear evento | ✅ | ❌ | ❌ |
-| Editar evento | ✅ | ❌ | ❌ |
-| Eliminar evento | ✅ | ❌ | ❌ |
-| Gestionar usuarios | ✅ | ❌ | ❌ |
-| Ver gráficas | ✅ | ❌ | ❌ |
-
----
-
-## 📱 Pantallas
-
-| Ruta | Descripción | Acceso |
-|------|-------------|--------|
-| `/login` | Inicio de sesión | Público |
-| `/home` | Dashboard principal | Autenticado |
-| `/eventos-academicos` | Lista de eventos | Autenticado |
-| `/registro-eventos` | Crear/Editar evento | Solo Admin |
-| `/administradores` | Gestión de admins | Solo Admin |
-| `/maestros` | Gestión de maestros | Admin/Maestro (solo lectura para Maestro) |
-| `/alumnos` | Gestión de alumnos | Admin/Maestro (solo lectura para Maestro) |
-| `/graficas` | Estadísticas | Solo Admin |
+| Acción | Admin | Docente | Estudiante |
+|--------|:-----:|:-------:|:----------:|
+| Visualizar eventos | ✅ | ✅ | ✅ (solo su programa) |
+| Agregar eventos | ✅ | ❌ | ❌ |
+| Modificar eventos | ✅ | ❌ | ❌ |
+| Eliminar eventos | ✅ | ❌ | ❌ |
+| Administrar usuarios | ✅ | ❌ | ❌ |
+| Consultar estadísticas | ✅ | ❌ | ❌ |
 
 ---
 
-## 🔧 Solución de Problemas
+## Rutas de la Aplicación
 
-### "Cannot find module"
+| URL | Vista | Restricción |
+|-----|-------|-------------|
+| `/login` | Acceso al sistema | Pública |
+| `/home` | Panel principal | Usuario autenticado |
+| `/eventos-academicos` | Listado de eventos | Usuario autenticado |
+| `/registro-eventos` | Formulario de eventos | Solo administrador |
+| `/administradores` | Tabla de admins | Solo administrador |
+| `/maestros` | Tabla de docentes | Admin y docente (lectura) |
+| `/alumnos` | Tabla de estudiantes | Admin y docente (lectura) |
+| `/graficas` | Panel de métricas | Solo administrador |
+
+---
+
+## Problemas Frecuentes
+
+### Error "Cannot find module"
+Reinstala las dependencias:
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
-### "Port 4200 already in use"
+### Puerto 4200 ocupado
+Utiliza un puerto diferente:
 ```bash
 ng serve --port 4300
 ```
 
-### Error 401 Unauthorized
-Cerrar sesión y volver a iniciar.
+### Error 401 al consumir API
+Cierra e inicia sesión nuevamente.
 
-### Pantalla en blanco en Vercel
-Verificar que `vercel.json` tenga las rutas configuradas correctamente.
-
----
-
-## 🔄 Flujo de Desarrollo
-
-1. **Iniciar Backend** (puerto 8000)
-   ```bash
-   cd app-movil-escolar-backend
-   source venv/bin/activate
-   python manage.py runserver
-   ```
-
-2. **Iniciar Frontend** (puerto 4200)
-   ```bash
-   cd app-movil-escolar-frontend
-   ng serve
-   ```
-
-3. **Acceder**: [http://localhost:4200](http://localhost:4200)
+### Página vacía en Vercel
+Revisa que `vercel.json` contenga las rutas correctamente.
 
 ---
 
-## 👥 Autores
+## Desarrollo Local
 
-- **Materia**: Desarrollo de Aplicaciones Móviles
-- **Institución**: Universidad
-- **Fecha**: Noviembre 2025
+Para trabajar en modo desarrollo necesitas ambos servicios:
+
+**Terminal 1 - Levantar API** (puerto 8000)
+```bash
+cd AppMovilEscolarWeb-Backend
+source venv/bin/activate
+python manage.py runserver
+```
+
+**Terminal 2 - Levantar Frontend** (puerto 4200)
+```bash
+cd AppMovilEscolarWeb-Frontend
+ng serve
+```
+
+**Abrir en navegador**: http://localhost:4200
 
 ---
 
-## 📄 Licencia
+## Datos del Proyecto
 
-Proyecto educativo - Todos los derechos reservados.
+| Campo | Valor |
+|-------|-------|
+| Curso | Desarrollo de Aplicaciones Móviles |
+| Institución | Universidad |
+| Fecha | Noviembre 2025 |
+
+---
+
+## Licencia
+
+Proyecto con propósitos educativos. Derechos reservados.
